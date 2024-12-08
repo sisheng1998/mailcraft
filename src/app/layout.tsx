@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Plus_Jakarta_Sans as FontSans } from "next/font/google"
 
 import { cn } from "@/lib/utils"
+import Providers from "@/app/providers"
 
 import "@/app/globals.css"
 
@@ -20,14 +21,14 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode
 }>) => (
-  <html lang="en">
+  <html lang="en" suppressHydrationWarning>
     <body
       className={cn(
-        "bg-background text-foreground relative flex min-h-screen flex-col overflow-x-hidden overscroll-y-none font-sans antialiased",
+        "relative flex min-h-screen flex-col overflow-x-hidden overscroll-y-none bg-background font-sans text-foreground antialiased",
         fontSans.variable
       )}
     >
-      {children}
+      <Providers>{children}</Providers>
     </body>
   </html>
 )
