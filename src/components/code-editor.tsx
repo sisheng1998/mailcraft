@@ -3,7 +3,7 @@
 import React from "react"
 import Editor, { BeforeMount, OnMount } from "@monaco-editor/react"
 
-import { useCodeEditor } from "@/hooks/useCodeEditor"
+import { useCodeEditor } from "@/hooks/use-code-editor"
 
 const CodeEditor = () => {
   const { value, setValue } = useCodeEditor()

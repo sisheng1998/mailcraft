@@ -5,7 +5,7 @@ import * as ReactEmailComponents from "@react-email/components"
 import { render } from "@react-email/render"
 import initSwc, { transform } from "@swc/wasm-web"
 
-import { useCodeEditor } from "@/hooks/useCodeEditor"
+import { useCodeEditor } from "@/hooks/use-code-editor"
 import { Button } from "@/components/ui/button"
 
 interface EmailComponent {

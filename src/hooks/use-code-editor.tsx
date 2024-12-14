@@ -15,7 +15,7 @@ interface CodeEditorProviderProps {
   children: ReactNode
 }
 
-export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
+const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
   children,
 }) => {
   const [value, setValue] = useState<string>(`import {
@@ -204,7 +204,7 @@ const cautionText = { ...text, margin: "0px" };
   )
 }
 
-export const useCodeEditor = (): CodeEditorContextType => {
+const useCodeEditor = (): CodeEditorContextType => {
   const context = useContext(CodeEditorContext)
 
   if (!context) {
@@ -213,3 +213,5 @@ export const useCodeEditor = (): CodeEditorContextType => {
 
   return context
 }
+
+export { CodeEditorProvider, useCodeEditor }

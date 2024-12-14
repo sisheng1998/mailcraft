@@ -1,7 +1,7 @@
 import React from "react"
 
 import { TooltipProvider } from "@/components/ui/tooltip"
-import ThemeProvider from "@/components/ThemeProvider"
+import ThemeProvider from "@/components/theme-provider"
 
 const Providers = ({ children }: { children: React.ReactNode }) => (
   <ThemeProvider
