@@ -6,14 +6,17 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {
-  ApplicationMenu,
-  EmailSelectionMenu,
+  NavEmails,
+  NavPrimary,
+  NavSecondary,
 } from "@/components/layouts/sidebar-components"
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => (
@@ -32,21 +35,34 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => (
     </SidebarHeader>
 
     <SidebarContent className="[&>[data-sidebar=group]:first-of-type]:pt-0">
-      <ApplicationMenu />
-      <EmailSelectionMenu />
+      <NavPrimary />
+      <NavEmails />
+      <NavSecondary className="mt-auto" />
     </SidebarContent>
 
     <SidebarFooter>
-      <SidebarMenu>
-        <SidebarMenuItem className="p-2 text-xs">
-          Made with
-          <Heart className="mx-1 mb-1 inline size-3.5" />
-          by{" "}
-          <Link href="https://sisheng.my" target="_blank" className="underline">
-            Sheng
-          </Link>
-        </SidebarMenuItem>
-      </SidebarMenu>
+      <SidebarGroup>
+        <SidebarGroupContent>
+          <SidebarMenu className="gap-2.5">
+            <SidebarMenuItem className="text-xs">
+              Made with
+              <Heart className="mx-1 mb-1 inline size-3.5" />
+              by{" "}
+              <Link
+                href="https://sisheng.my"
+                target="_blank"
+                className="underline"
+              >
+                Sheng
+              </Link>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem className="text-xs">
+              © {new Date().getFullYear()} - All Rights Reserved
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
     </SidebarFooter>
 
     <SidebarRail />

@@ -3,6 +3,7 @@
 import React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import GitHub from "@/icons/GitHub"
 import {
   BookOpen,
   Component,
@@ -54,7 +55,7 @@ const ITEMS = [
   },
 ]
 
-export const ApplicationMenu = () => {
+export const NavPrimary = () => {
   const pathname = usePathname()
 
   return (
@@ -64,7 +65,7 @@ export const ApplicationMenu = () => {
       <SidebarGroupContent>
         <SidebarMenu>
           {ITEMS.map((item) => (
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem key={item.title} className="group-menu-item">
               <SidebarMenuButton asChild isActive={pathname === item.url}>
                 <Link
                   href={item.url}
@@ -73,7 +74,7 @@ export const ApplicationMenu = () => {
                   <item.icon />
                   <span>{item.title}</span>
                   {item.isExternal && (
-                    <SquareArrowOutUpRight className="ml-auto !size-3.5 text-muted-foreground" />
+                    <SquareArrowOutUpRight className="ml-auto !size-3.5 text-muted-foreground opacity-0 group-hover/menu-item:opacity-100" />
                   )}
                 </Link>
               </SidebarMenuButton>
@@ -85,7 +86,7 @@ export const ApplicationMenu = () => {
   )
 }
 
-export const EmailSelectionMenu = () => {
+export const NavEmails = () => {
   const emails = []
 
   return (
@@ -123,3 +124,26 @@ export const EmailSelectionMenu = () => {
     </SidebarGroup>
   )
 }
+
+export const NavSecondary = (
+  props: React.ComponentPropsWithoutRef<typeof SidebarGroup>
+) => (
+  <SidebarGroup {...props}>
+    <SidebarGroupContent>
+      <SidebarMenu>
+        <SidebarMenuItem className="group-menu-item">
+          <SidebarMenuButton asChild>
+            <Link
+              href="https://github.com/sisheng1998/react-email-editor"
+              target="_blank"
+            >
+              <GitHub />
+              <span>GitHub</span>
+              <SquareArrowOutUpRight className="ml-auto !size-3.5 text-muted-foreground opacity-0 group-hover/menu-item:opacity-100" />
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarGroupContent>
+  </SidebarGroup>
+)
