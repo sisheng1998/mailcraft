@@ -25,8 +25,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-export const SIDEBAR_LOCAL_STORAGE_NAME = "sidebar"
-export const SIDEBAR_LOCAL_STORAGE_DEFAULT_VALUE = "expanded"
 const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
@@ -57,14 +55,12 @@ const useSidebar = () => {
 const SidebarProvider = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
-    defaultOpen?: boolean
     open?: boolean
     onOpenChange?: (open: boolean) => void
   }
 >(
   (
     {
-      defaultOpen = true,
       open: openProp,
       onOpenChange: setOpenProp,
       className,
@@ -77,14 +73,14 @@ const SidebarProvider = React.forwardRef<
     const isMobile = useIsMobile()
     const [openMobile, setOpenMobile] = React.useState(false)
 
-    const [_, setSidebarState] = useLocalStorage(
-      SIDEBAR_LOCAL_STORAGE_NAME,
-      SIDEBAR_LOCAL_STORAGE_DEFAULT_VALUE
+    const [sidebarState, setSidebarState] = useLocalStorage(
+      "sidebar",
+      "expanded"
     )
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
-    const [_open, _setOpen] = React.useState(defaultOpen)
+    const [_open, _setOpen] = React.useState(sidebarState === "expanded")
     const open = openProp ?? _open
     const setOpen = React.useCallback(
       (value: boolean | ((value: boolean) => boolean)) => {
