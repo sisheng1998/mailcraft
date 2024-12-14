@@ -1,5 +1,6 @@
 import React from "react"
 
+import { TooltipProvider } from "@/components/ui/tooltip"
 import ThemeProvider from "@/components/ThemeProvider"
 
 const Providers = ({ children }: { children: React.ReactNode }) => (
@@ -9,7 +10,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => (
     enableSystem
     disableTransitionOnChange
   >
-    {children}
+    <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
   </ThemeProvider>
 )
 

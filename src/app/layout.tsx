@@ -24,7 +24,7 @@ const RootLayout = ({
   <html lang="en" suppressHydrationWarning>
     <body
       className={cn(
-        "relative flex min-h-screen flex-col overflow-x-hidden overscroll-y-none bg-background font-sans text-foreground antialiased",
+        "relative flex min-h-screen flex-col overflow-x-hidden overscroll-y-none font-sans antialiased",
         fontSans.variable
       )}
     >
