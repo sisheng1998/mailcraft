@@ -14,7 +14,7 @@ interface EmailComponent {
 }
 
 const transpileCode = async (code: string) => {
-  const result = await transform(code, {
+  const result = await transform(`import React from "react";\n${code}`, {
     jsc: { parser: { syntax: "typescript", tsx: true } },
     module: { type: "commonjs" },
     isModule: true,
