@@ -104,3 +104,39 @@
     @apply rounded-lg border-[3px] border-solid border-transparent bg-foreground/20 bg-clip-content transition hover:bg-foreground/30 active:bg-foreground/40;
   }
 }
+
+@layer components {
+  @keyframes email-rect {
+    from {
+      stroke-dashoffset: -69;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes email-path {
+    from {
+      stroke-dashoffset: -24;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .animate-logo rect {
+    stroke-dasharray: 69;
+    stroke-dashoffset: -69;
+    animation-name: email-rect;
+    @apply delay-300 duration-500 ease-in-out fill-mode-forwards;
+  }
+
+  .animate-logo path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: -24;
+    animation-name: email-path;
+    animation-duration: 400ms;
+    animation-delay: 800ms;
+    @apply ease-in-out fill-mode-forwards;
+  }
+}

@@ -16,6 +16,7 @@ const TopLoader = (props: NextTopLoaderProps) => {
     <Loader
       {...props}
       height={2}
+      zIndex={40}
       color="hsl(var(--primary))"
       showSpinner={false}
     />
