@@ -135,8 +135,6 @@
     stroke-dasharray: 24;
     stroke-dashoffset: -24;
     animation-name: email-path;
-    animation-duration: 400ms;
-    animation-delay: 800ms;
-    @apply ease-in-out fill-mode-forwards;
+    @apply delay-700 duration-500 ease-in-out fill-mode-forwards;
   }
 }
