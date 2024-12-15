@@ -1,5 +1,6 @@
 import React from "react"
 
+import { CodeEditorProvider } from "@/hooks/use-code-editor"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import ClientOnly from "@/components/layouts/client-only"
 import Preloader from "@/components/layouts/preloader"
@@ -12,7 +13,9 @@ const Providers = ({ children }: { children: React.ReactNode }) => (
 
     <SidebarProvider>
       <TopLoader />
-      <ClientOnly>{children}</ClientOnly>
+      <CodeEditorProvider>
+        <ClientOnly>{children}</ClientOnly>
+      </CodeEditorProvider>
     </SidebarProvider>
   </ThemeProvider>
 )
