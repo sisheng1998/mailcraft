@@ -28,7 +28,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => (
             <div className="flex items-center justify-center">
               <Mail className="size-6" />
             </div>
-            <span className="text-sm font-bold">Mailcraft</span>
+            <span className="font-bold">Mailcraft</span>
           </Link>
         </SidebarMenuItem>
       </SidebarMenu>
