@@ -34,7 +34,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => (
       </SidebarMenu>
     </SidebarHeader>
 
-    <SidebarContent className="[&>[data-sidebar=group]:first-of-type]:pt-0">
+    <SidebarContent className="gap-0 [&>div:first-of-type>div:first-of-type]:pt-0 [&>div]:pt-0">
       <NavPrimary />
       <NavEmails />
       <NavSecondary className="mt-auto" />
@@ -57,7 +57,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => (
               </Link>
             </SidebarMenuItem>
 
-            <SidebarMenuItem className="text-xs">
+            <SidebarMenuItem className="text-xs text-sidebar-foreground/70">
               © {new Date().getFullYear()} - All Rights Reserved
             </SidebarMenuItem>
           </SidebarMenu>

@@ -6,14 +6,23 @@ import { usePathname } from "next/navigation"
 import GitHub from "@/icons/GitHub"
 import {
   BookOpen,
-  Component,
+  ChevronRight,
   Home,
   LayoutTemplate,
+  Moon,
   Plus,
   SquareArrowOutUpRight,
+  Sun,
 } from "lucide-react"
+import { useTheme } from "next-themes"
 
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -42,15 +51,15 @@ const ITEMS = [
     isExternal: true,
   },
   {
-    title: "Components",
-    url: "https://react.email/components",
-    icon: Component,
-    isExternal: true,
-  },
-  {
     title: "Templates",
     url: "https://react.email/templates",
     icon: LayoutTemplate,
+    isExternal: true,
+  },
+  {
+    title: "GitHub",
+    url: "https://github.com/sisheng1998/react-email-editor",
+    icon: GitHub,
     isExternal: true,
   },
 ]
@@ -59,91 +68,127 @@ export const NavPrimary = () => {
   const pathname = usePathname()
 
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Application</SidebarGroupLabel>
+    <Collapsible defaultOpen className="group/collapsible">
+      <SidebarGroup>
+        <SidebarGroupLabel>
+          Application
+          <CollapsibleTrigger asChild>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="-mr-1 ml-auto size-6"
+            >
+              <ChevronRight className="transition-transform group-data-[state=open]/collapsible:rotate-90" />
+            </Button>
+          </CollapsibleTrigger>
+        </SidebarGroupLabel>
 
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {ITEMS.map((item) => (
-            <SidebarMenuItem key={item.title} className="group-menu-item">
-              <SidebarMenuButton asChild isActive={pathname === item.url}>
-                <Link
-                  href={item.url}
-                  target={item.isExternal ? "_blank" : "_self"}
-                >
-                  <item.icon />
-                  <span>{item.title}</span>
-                  {item.isExternal && (
-                    <SquareArrowOutUpRight className="ml-auto !size-3.5 text-muted-foreground opacity-0 group-hover/menu-item:opacity-100" />
-                  )}
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+        <CollapsibleContent>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {ITEMS.map((item) => {
+                const isActive = pathname === item.url
+
+                return (
+                  <SidebarMenuItem key={item.title} className="group-menu-item">
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      className={cn(isActive && "pointer-events-none")}
+                    >
+                      <Link
+                        href={item.url}
+                        target={item.isExternal ? "_blank" : "_self"}
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                        {item.isExternal && (
+                          <SquareArrowOutUpRight className="ml-auto !size-3.5 text-muted-foreground opacity-0 group-hover/menu-item:opacity-100" />
+                        )}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </CollapsibleContent>
+      </SidebarGroup>
+    </Collapsible>
   )
 }
 
+// TODO: Display list of emails + redirect to email page
 export const NavEmails = () => {
   const emails = []
 
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>
-        Emails
-        {emails.length > 0 && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="-mr-1 ml-auto size-6"
-              >
-                <Plus />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">New Email</TooltipContent>
-          </Tooltip>
-        )}
-      </SidebarGroupLabel>
+    <Collapsible defaultOpen className="group/collapsible">
+      <SidebarGroup>
+        <SidebarGroupLabel>
+          Emails
+          <div className="-mr-1 ml-auto flex items-center gap-0.5">
+            {emails.length > 0 && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button size="icon" variant="ghost" className="size-6">
+                    <Plus />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">New Email</TooltipContent>
+              </Tooltip>
+            )}
 
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {emails.length === 0 && (
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <Plus />
-                <span>New Email</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          )}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+            <CollapsibleTrigger asChild>
+              <Button size="icon" variant="ghost" className="size-6">
+                <ChevronRight className="transition-transform group-data-[state=open]/collapsible:rotate-90" />
+              </Button>
+            </CollapsibleTrigger>
+          </div>
+        </SidebarGroupLabel>
+
+        <CollapsibleContent>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {emails.length === 0 && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton>
+                    <Plus />
+                    <span>New Email</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </CollapsibleContent>
+      </SidebarGroup>
+    </Collapsible>
   )
 }
 
 export const NavSecondary = (
   props: React.ComponentPropsWithoutRef<typeof SidebarGroup>
-) => (
-  <SidebarGroup {...props}>
-    <SidebarGroupContent>
-      <SidebarMenu>
-        <SidebarMenuItem className="group-menu-item">
-          <SidebarMenuButton asChild>
-            <Link
-              href="https://github.com/sisheng1998/react-email-editor"
-              target="_blank"
+) => {
+  const { setTheme, resolvedTheme } = useTheme()
+
+  return (
+    <SidebarGroup {...props}>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              className="capitalize"
+              onClick={() =>
+                setTheme(resolvedTheme === "light" ? "dark" : "light")
+              }
             >
-              <GitHub />
-              <span>GitHub</span>
-              <SquareArrowOutUpRight className="ml-auto !size-3.5 text-muted-foreground opacity-0 group-hover/menu-item:opacity-100" />
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
-    </SidebarGroupContent>
-  </SidebarGroup>
-)
+              <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              {resolvedTheme} Mode
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  )
+}
