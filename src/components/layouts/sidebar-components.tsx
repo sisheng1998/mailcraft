@@ -58,7 +58,7 @@ const ITEMS = [
   },
   {
     title: "GitHub",
-    url: "https://github.com/sisheng1998/react-email-editor",
+    url: "https://github.com/sisheng1998/mailcraft",
     icon: GitHub,
     isExternal: true,
   },
