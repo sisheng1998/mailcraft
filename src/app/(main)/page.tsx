@@ -6,7 +6,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import CodeEditor from "@/components/code-editor"
-import EmailPreview from "@/components/email-preview"
+import EmailPreview from "@/components/email/email-preview"
 
 const Home = () => (
   <ResizablePanelGroup direction="horizontal">

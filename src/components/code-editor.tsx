@@ -1,60 +1,23 @@
 "use client"
 
 import React from "react"
-import Editor, { BeforeMount, OnMount } from "@monaco-editor/react"
+import Editor, { BeforeMount } from "@monaco-editor/react"
 
-import { useCodeEditor } from "@/hooks/use-code-editor"
+import { useEmail } from "@/hooks/use-email"
 
 const CodeEditor = () => {
-  const { value, setValue } = useCodeEditor()
+  const { value, setValue } = useEmail()
 
   const handleEditorWillMount: BeforeMount = (monaco) => {
-    monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-      jsx: monaco.languages.typescript.JsxEmit.React,
-      esModuleInterop: true,
+    monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: true,
+      noSyntaxValidation: true,
     })
 
-    fetch("https://cdn.jsdelivr.net/npm/@types/react/index.d.ts")
-      .then((response) => response.text())
-      .then((data) => {
-        // Add the fetched type definitions to Monaco Editor
-        monaco.languages.typescript.typescriptDefaults.addExtraLib(
-          data,
-          "file:///node_modules/@types/react/index.d.ts"
-        )
-      })
-      .catch((error) => {
-        console.error("Failed to fetch type definitions:", error)
-      })
-    fetch("https://cdn.jsdelivr.net/npm/@types/node/globals.d.ts")
-      .then((response) => response.text())
-      .then((data) => {
-        // Add the fetched type definitions to Monaco Editor
-        monaco.languages.typescript.typescriptDefaults.addExtraLib(
-          data,
-          "file:///node_modules/@types/node/globals.d.ts"
-        )
-      })
-      .catch((error) => {
-        console.error("Failed to fetch type definitions:", error)
-      })
-    fetch(
-      "https://cdn.jsdelivr.net/npm/@react-email/components/dist/index.d.ts"
-    )
-      .then((response) => response.text())
-      .then((data) => {
-        // Add the fetched type definitions to Monaco Editor
-        monaco.languages.typescript.typescriptDefaults.addExtraLib(
-          data,
-          "file:///node_modules/@react-email/components/index.d.ts"
-        )
-      })
-      .catch((error) => {
-        console.error("Failed to fetch type definitions:", error)
-      })
+    monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+      jsx: monaco.languages.typescript.JsxEmit.React,
+    })
   }
-
-  const handleEditorDidMount: OnMount = (editor, monaco) => {}
 
   const handleChange = (value?: string) => {
     setValue(value || "")
@@ -67,8 +30,12 @@ const CodeEditor = () => {
       value={value}
       onChange={handleChange}
       beforeMount={handleEditorWillMount}
-      onMount={handleEditorDidMount}
       path="file:///main.tsx"
+      options={{
+        minimap: {
+          enabled: false,
+        },
+      }}
     />
   )
 }

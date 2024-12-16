@@ -5,8 +5,8 @@ import * as ReactEmailComponents from "@react-email/components"
 import { render } from "@react-email/render"
 import initSwc, { transform } from "@swc/wasm-web"
 
-import { useCodeEditor } from "@/hooks/use-code-editor"
-import { Button } from "@/components/ui/button"
+import { useEmail } from "@/hooks/use-email"
+import ErrorMessage from "@/components/email/error-message"
 
 interface EmailComponent {
   (props: Record<string, unknown> | Record<string, never>): React.ReactNode
@@ -14,7 +14,7 @@ interface EmailComponent {
 }
 
 const transpileCode = async (code: string) => {
-  const result = await transform(`import React from "react";\n${code}`, {
+  const result = await transform(code, {
     jsc: { parser: { syntax: "typescript", tsx: true } },
     module: { type: "commonjs" },
     isModule: true,
@@ -53,7 +53,7 @@ const evaluateCode = (code: string): EmailComponent | undefined => {
 }
 
 const EmailPreview: React.FC = () => {
-  const { value } = useCodeEditor()
+  const { value } = useEmail()
   const [emailHtml, setEmailHtml] = useState<string>("")
   const [error, setError] = useState<string>("")
   const [initialized, setInitialized] = useState<boolean>(false)
@@ -66,48 +66,47 @@ const EmailPreview: React.FC = () => {
     init()
   }, [])
 
-  const handlePreview = async () => {
-    try {
-      setError("")
+  useEffect(() => {
+    if (!initialized) return
 
-      if (!value.trim())
-        throw new Error("The code editor is empty. Please write some code.")
+    const renderEmail = async () => {
+      try {
+        setError("")
 
-      const transpiledCode = await transpileCode(value)
-      const emailComponent = evaluateCode(transpiledCode)
+        if (!value.trim()) return
 
-      if (emailComponent === undefined) {
-        throw new Error("The email component does not contain a default export")
+        const transpiledCode = await transpileCode(value)
+        const emailComponent = evaluateCode(transpiledCode)
+
+        if (emailComponent === undefined) {
+          throw new Error(
+            "The email component does not contain a default export"
+          )
+        }
+
+        const previewProps = emailComponent.PreviewProps || {}
+        const renderedHtml = await render(
+          createElement(emailComponent, previewProps)
+        )
+        setEmailHtml(renderedHtml)
+      } catch (error) {
+        setError(error instanceof Error ? error.message : String(error))
       }
-
-      const previewProps = emailComponent.PreviewProps || {}
-      const renderedHtml = await render(
-        createElement(emailComponent, previewProps)
-      )
-      setEmailHtml(renderedHtml)
-    } catch (error) {
-      setError(error instanceof Error ? error.message : String(error))
     }
-  }
+
+    renderEmail()
+  }, [value, initialized])
 
   return (
-    <div className="flex h-full flex-col">
-      <Button onClick={handlePreview} disabled={!initialized}>
-        Preview Email
-      </Button>
-
-      {error && (
-        <div className="rounded-md bg-destructive/10 p-4 text-destructive">
-          <pre className="whitespace-pre-wrap">{error}</pre>
-        </div>
-      )}
+    <div className="relative flex h-full flex-col bg-white">
+      <ErrorMessage error={error} />
 
       {emailHtml && (
         <iframe
           srcDoc={emailHtml}
           title="Email Preview"
-          className="h-full w-full border-0"
-          sandbox="allow-scripts"
+          className="h-full w-full border-0 bg-white"
+          sandbox="allow-popups"
         />
       )}
     </div>

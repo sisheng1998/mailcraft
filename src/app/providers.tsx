@@ -1,6 +1,6 @@
 import React from "react"
 
-import { CodeEditorProvider } from "@/hooks/use-code-editor"
+import { EmailProvider } from "@/hooks/use-email"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import ClientOnly from "@/components/layouts/client-only"
 import Preloader from "@/components/layouts/preloader"
@@ -9,14 +9,15 @@ import ThemeProvider from "@/components/theme-provider"
 
 const Providers = ({ children }: { children: React.ReactNode }) => (
   <ThemeProvider attribute="class" disableTransitionOnChange>
-    <Preloader />
-
     <SidebarProvider>
       <TopLoader />
-      <CodeEditorProvider>
+
+      <EmailProvider>
         <ClientOnly>{children}</ClientOnly>
-      </CodeEditorProvider>
+      </EmailProvider>
     </SidebarProvider>
+
+    <Preloader />
   </ThemeProvider>
 )
 

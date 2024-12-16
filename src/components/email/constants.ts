@@ -1,24 +1,6 @@
-"use client"
-
-import React, { createContext, ReactNode, useContext, useState } from "react"
-
-interface CodeEditorContextType {
-  value: string
-  setValue: (value: string) => void
-}
-
-const CodeEditorContext = createContext<CodeEditorContextType | undefined>(
-  undefined
-)
-
-interface CodeEditorProviderProps {
-  children: ReactNode
-}
-
-const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
-  children,
-}) => {
-  const [value, setValue] = useState<string>(`import {
+export const HOME_PAGE_CODE = `
+import React from "react";
+import {
   Body,
   Container,
   Head,
@@ -31,7 +13,6 @@ const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
   Section,
   Text,
 } from "@react-email/components";
-import React from "react";
 
 interface AWSVerifyEmailProps {
   verificationCode?: string;
@@ -190,28 +171,4 @@ const verificationSection = {
 const mainText = { ...text, marginBottom: "14px" };
 
 const cautionText = { ...text, margin: "0px" };
-`)
-
-  return (
-    <CodeEditorContext.Provider
-      value={{
-        value,
-        setValue,
-      }}
-    >
-      {children}
-    </CodeEditorContext.Provider>
-  )
-}
-
-const useCodeEditor = (): CodeEditorContextType => {
-  const context = useContext(CodeEditorContext)
-
-  if (!context) {
-    throw new Error("useCodeEditor must be used within a CodeEditorProvider")
-  }
-
-  return context
-}
-
-export { CodeEditorProvider, useCodeEditor }
+`.trim()
