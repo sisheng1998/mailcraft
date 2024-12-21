@@ -2,10 +2,12 @@
 
 import React from "react"
 import Editor, { BeforeMount } from "@monaco-editor/react"
+import { useTheme } from "next-themes"
 
 import { useEmail } from "@/hooks/use-email"
 
 const CodeEditor = () => {
+  const { resolvedTheme } = useTheme()
   const { code, setCode } = useEmail()
 
   const handleEditorWillMount: BeforeMount = (monaco) => {
@@ -25,7 +27,7 @@ const CodeEditor = () => {
 
   return (
     <Editor
-      theme="vs-dark"
+      theme={resolvedTheme === "light" ? "vs" : "vs-dark"}
       defaultLanguage="typescript"
       value={code}
       onChange={handleChange}
