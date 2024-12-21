@@ -6,7 +6,7 @@ import Editor, { BeforeMount } from "@monaco-editor/react"
 import { useEmail } from "@/hooks/use-email"
 
 const CodeEditor = () => {
-  const { value, setValue } = useEmail()
+  const { code, setCode } = useEmail()
 
   const handleEditorWillMount: BeforeMount = (monaco) => {
     monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
@@ -20,14 +20,14 @@ const CodeEditor = () => {
   }
 
   const handleChange = (value?: string) => {
-    setValue(value || "")
+    setCode(value || "")
   }
 
   return (
     <Editor
       theme="vs-dark"
       defaultLanguage="typescript"
-      value={value}
+      value={code}
       onChange={handleChange}
       beforeMount={handleEditorWillMount}
       path="file:///main.tsx"

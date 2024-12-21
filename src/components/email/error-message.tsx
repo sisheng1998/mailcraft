@@ -4,8 +4,6 @@ import stripAnsi from "strip-ansi"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 const ErrorMessage = ({ error }: { error: string }) => {
-  if (error.trim() === "") return null
-
   const formattedError = stripAnsi(error)
 
   return (
@@ -17,7 +15,7 @@ const ErrorMessage = ({ error }: { error: string }) => {
         <div className="absolute left-0 top-0 h-1 w-full bg-red-600" />
 
         <AlertTitle className="text-lg text-red-700">
-          Code Issue Detected
+          Code Error Detected
         </AlertTitle>
 
         <p className="mb-4 text-zinc-700">

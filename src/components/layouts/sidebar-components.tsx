@@ -3,7 +3,6 @@
 import React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import GitHub from "@/icons/GitHub"
 import {
   BookOpen,
   ChevronRight,
@@ -36,6 +35,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import GitHub from "@/icons/GitHub"
 
 const ITEMS = [
   {
