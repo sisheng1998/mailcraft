@@ -13,11 +13,9 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import {
-  NavEmails,
-  NavPrimary,
-  NavSecondary,
-} from "@/components/layouts/sidebar-components"
+import NavEmails from "@/components/layouts/sidebar/nav-emails"
+import NavPrimary from "@/components/layouts/sidebar/nav-primary"
+import NavSecondary from "@/components/layouts/sidebar/nav-secondary"
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => (
   <Sidebar {...props}>

@@ -1,37 +1,13 @@
 "use client"
 
-import { usePathname } from "next/navigation"
 import { CodeXml, Monitor, Smartphone } from "lucide-react"
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-
-// TODO: Display name for the email page
-export const PageBreadcrumb = (
-  props: React.ComponentPropsWithoutRef<typeof Breadcrumb>
-) => {
-  const pathname = usePathname()
-
-  return (
-    <Breadcrumb {...props}>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbPage>{pathname === "/" ? "Home" : "Email"}</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
-  )
-}
 
 const ITEMS = [
   {
@@ -50,7 +26,7 @@ const ITEMS = [
 
 // TODO: Link to email page
 // TODO: Handle mobile view
-export const PreviewMode = () => {
+const PreviewMode = () => {
   return (
     <Tabs defaultValue={ITEMS[0].title}>
       <TabsList>
@@ -69,3 +45,5 @@ export const PreviewMode = () => {
     </Tabs>
   )
 }
+
+export default PreviewMode

@@ -2,13 +2,11 @@ import React from "react"
 
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import {
-  PageBreadcrumb,
-  PreviewMode,
-} from "@/components/layouts/header-components"
-import SendEmailButton from "@/components/layouts/header/SendEmailButton"
+import PageBreadcrumb from "@/components/layouts/header/page-breadcrumb"
+import PreviewMode from "@/components/layouts/header/preview-mode"
+import SendEmailButton from "@/components/layouts/header/send-email-button"
 
-const Header = () => (
+const AppHeader = () => (
   <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-3.5 border-b bg-sidebar px-4">
     <SidebarTrigger className="-mx-1.5" />
 
@@ -23,4 +21,4 @@ const Header = () => (
   </header>
 )
 
-export default Header
+export default AppHeader

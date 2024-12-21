@@ -8,12 +8,8 @@ import {
   ChevronRight,
   Home,
   LayoutTemplate,
-  Moon,
-  Plus,
   SquareArrowOutUpRight,
-  Sun,
 } from "lucide-react"
-import { useTheme } from "next-themes"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -30,11 +26,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import GitHub from "@/icons/GitHub"
 
 const ITEMS = [
@@ -64,7 +55,7 @@ const ITEMS = [
   },
 ]
 
-export const NavPrimary = () => {
+const NavPrimary = () => {
   const pathname = usePathname()
 
   return (
@@ -118,77 +109,4 @@ export const NavPrimary = () => {
   )
 }
 
-// TODO: Display list of emails + redirect to email page
-export const NavEmails = () => {
-  const emails = []
-
-  return (
-    <Collapsible defaultOpen className="group/collapsible">
-      <SidebarGroup>
-        <SidebarGroupLabel>
-          Emails
-          <div className="-mr-1 ml-auto flex items-center gap-0.5">
-            {emails.length > 0 && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button size="icon" variant="ghost" className="size-6">
-                    <Plus />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="right">New Email</TooltipContent>
-              </Tooltip>
-            )}
-
-            <CollapsibleTrigger asChild>
-              <Button size="icon" variant="ghost" className="size-6">
-                <ChevronRight className="transition-transform group-data-[state=open]/collapsible:rotate-90" />
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-        </SidebarGroupLabel>
-
-        <CollapsibleContent>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {emails.length === 0 && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton>
-                    <Plus />
-                    <span>New Email</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </CollapsibleContent>
-      </SidebarGroup>
-    </Collapsible>
-  )
-}
-
-export const NavSecondary = (
-  props: React.ComponentPropsWithoutRef<typeof SidebarGroup>
-) => {
-  const { setTheme, resolvedTheme } = useTheme()
-
-  return (
-    <SidebarGroup {...props}>
-      <SidebarGroupContent>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              className="capitalize"
-              onClick={() =>
-                setTheme(resolvedTheme === "light" ? "dark" : "light")
-              }
-            >
-              <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              {resolvedTheme} Mode
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
-  )
-}
+export default NavPrimary
