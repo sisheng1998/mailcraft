@@ -9,7 +9,6 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb"
-import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Tooltip,
@@ -69,9 +68,4 @@ export const PreviewMode = () => {
       </TabsList>
     </Tabs>
   )
-}
-
-// TODO: Handle send email
-export const SendButton = () => {
-  return <Button>Send</Button>
 }

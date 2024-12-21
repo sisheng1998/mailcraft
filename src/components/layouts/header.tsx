@@ -5,8 +5,8 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import {
   PageBreadcrumb,
   PreviewMode,
-  SendButton,
 } from "@/components/layouts/header-components"
+import SendEmailButton from "@/components/layouts/header/SendEmailButton"
 
 const Header = () => (
   <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-3.5 border-b bg-sidebar px-4">
@@ -18,7 +18,7 @@ const Header = () => (
 
     <div className="flex items-center gap-3.5">
       <PreviewMode />
-      <SendButton />
+      <SendEmailButton />
     </div>
   </header>
 )

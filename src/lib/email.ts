@@ -47,3 +47,22 @@ export const evaluateCode = (code: string): EmailComponent => {
 
   return emailComponent as EmailComponent
 }
+
+export const sendTestEmail = async (body: {
+  to: string
+  subject: string
+  html: string
+}) => {
+  const response = await fetch("https://react.email/api/send/test", {
+    method: "POST",
+    body: JSON.stringify(body),
+  })
+
+  const data = await response.json()
+
+  if (!response.ok) {
+    throw new Error(data?.error || "Something went wrong")
+  }
+
+  return data
+}

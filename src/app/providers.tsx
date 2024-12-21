@@ -2,6 +2,7 @@ import React from "react"
 
 import { EmailProvider } from "@/hooks/use-email"
 import { SidebarProvider } from "@/components/ui/sidebar"
+import { Toaster } from "@/components/ui/sonner"
 import ClientOnly from "@/components/layouts/client-only"
 import Preloader from "@/components/layouts/preloader"
 import TopLoader from "@/components/layouts/top-loader"
@@ -18,6 +19,8 @@ const Providers = ({ children }: { children: React.ReactNode }) => (
     </SidebarProvider>
 
     <Preloader />
+
+    <Toaster />
   </ThemeProvider>
 )
 
