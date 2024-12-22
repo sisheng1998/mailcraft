@@ -18,6 +18,7 @@ const CodeEditor = () => {
 
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       jsx: monaco.languages.typescript.JsxEmit.React,
+      isolatedModules: true,
     })
   }
 
@@ -29,6 +30,7 @@ const CodeEditor = () => {
     <Editor
       theme={resolvedTheme === "light" ? "vs" : "vs-dark"}
       defaultLanguage="typescript"
+      className="[&_.monaco-editor]:absolute"
       value={code}
       onChange={handleChange}
       beforeMount={handleEditorWillMount}
@@ -36,6 +38,10 @@ const CodeEditor = () => {
       options={{
         minimap: {
           enabled: false,
+        },
+        scrollBeyondLastLine: false,
+        padding: {
+          top: 8,
         },
       }}
     />
