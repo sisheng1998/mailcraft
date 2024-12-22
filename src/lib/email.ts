@@ -3,6 +3,10 @@ import * as ReactEmailComponents from "@react-email/components"
 import { transform } from "@swc/wasm-web"
 
 import { EmailComponent } from "@/types/email"
+import {
+  REACT_EMAIL_API_ENDPOINT,
+  REACT_EMAIL_DEMO_URL,
+} from "@/constants/email"
 
 export const transpileCode = async (code: string) => {
   const result = await transform(code, {
@@ -66,12 +70,34 @@ export const getCleanHtml = (html: string) =>
     (match) => invisibleCharacters[match]
   )
 
+export const updateStaticResourceUrls = (html: string): string => {
+  html = html.replace(
+    /<img\s+[^>]*src="\/static\/([^"]+)"[^>]*>/g,
+    (match, url) =>
+      match.replace(
+        `src="/static/${url}"`,
+        `src="${REACT_EMAIL_DEMO_URL}/static/${url}"`
+      )
+  )
+
+  html = html.replace(
+    /<link\s+[^>]*href="\/static\/([^"]+)"[^>]*>/g,
+    (match, url) =>
+      match.replace(
+        `href="/static/${url}"`,
+        `href="${REACT_EMAIL_DEMO_URL}/static/${url}"`
+      )
+  )
+
+  return html
+}
+
 export const sendTestEmail = async (body: {
   to: string
   subject: string
   html: string
 }) => {
-  const response = await fetch("https://react.email/api/send/test", {
+  const response = await fetch(REACT_EMAIL_API_ENDPOINT, {
     method: "POST",
     body: JSON.stringify(body),
   })

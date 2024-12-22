@@ -11,7 +11,12 @@ import React, {
 import { render } from "@react-email/render"
 import initSwc from "@swc/wasm-web"
 
-import { evaluateCode, getCleanHtml, transpileCode } from "@/lib/email"
+import {
+  evaluateCode,
+  getCleanHtml,
+  transpileCode,
+  updateStaticResourceUrls,
+} from "@/lib/email"
 import { HOME_PAGE_CODE } from "@/components/email/constants"
 
 interface EmailContextType {
@@ -60,15 +65,17 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
         const emailComponent = evaluateCode(transpiledCode)
 
         const previewProps = emailComponent.PreviewProps || {}
-        const previewHtml = await render(
-          createElement(emailComponent, previewProps)
+        const previewHtml = updateStaticResourceUrls(
+          await render(createElement(emailComponent, previewProps))
         )
         setPreviewHtml(previewHtml)
 
-        const emailHtml = getCleanHtml(
-          await render(createElement(emailComponent), {
-            pretty: true,
-          })
+        const emailHtml = updateStaticResourceUrls(
+          getCleanHtml(
+            await render(createElement(emailComponent), {
+              pretty: true,
+            })
+          )
         )
         setEmailHtml(emailHtml)
 
