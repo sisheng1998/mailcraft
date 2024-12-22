@@ -5,7 +5,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
-import CodeEditor from "@/components/code-editor"
+import CodeEditor from "@/components/code/code-editor"
 import EmailPreview from "@/components/email/email-preview"
 
 const Home = () => (

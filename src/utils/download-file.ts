@@ -1,6 +1,7 @@
 export enum FileMimeType {
   TEXT = "text/plain",
   HTML = "text/html",
+  TSX = "text/typescript-jsx",
 }
 
 export const downloadFile = (
