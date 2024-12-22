@@ -60,7 +60,7 @@ const CodePreview = () => {
             className="[&_.monaco-editor]:absolute"
             defaultLanguage="html"
             value={type.value === "plain-text" ? plainText : emailHtml}
-            path="file:///index.html"
+            path={`file:///index.${type.value === "plain-text" ? "txt" : "html"}`}
             options={{
               minimap: {
                 enabled: false,
