@@ -3,6 +3,7 @@
 import React from "react"
 import { useQueryState } from "nuqs"
 
+import { cn } from "@/lib/utils"
 import { useEmail } from "@/hooks/use-email"
 import CodePreview from "@/components/code/code-preview"
 import ErrorMessage from "@/components/email/error-message"
@@ -18,7 +19,7 @@ const EmailPreview = () => {
   const { previewHtml, initialized, error } = useEmail()
 
   return (
-    <div className="relative flex h-full flex-col bg-white">
+    <div className="relative flex h-full flex-col">
       {!initialized && <LoadingIndicator />}
 
       {view === "code" ? (
@@ -28,7 +29,10 @@ const EmailPreview = () => {
           <iframe
             srcDoc={previewHtml}
             title="Email Preview"
-            className="h-full w-full border-0 bg-white"
+            className={cn(
+              "h-full w-full border-0 bg-white",
+              view === "mobile" && "mx-auto max-w-[360px]"
+            )}
             sandbox="allow-popups"
           />
         )
