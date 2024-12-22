@@ -1,7 +1,8 @@
 "use client"
 
-import React from "react"
-import Editor, { BeforeMount } from "@monaco-editor/react"
+import React, { useRef } from "react"
+import Editor, { BeforeMount, OnMount } from "@monaco-editor/react"
+import { editor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import { useDebounceCallback } from "usehooks-ts"
 
@@ -9,6 +10,7 @@ import { useEmail } from "@/hooks/use-email"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CopyToClipboard from "@/components/code/copy-to-clipboard"
 import DownloadFile from "@/components/code/download-file"
+import FormatCode from "@/components/code/format-code"
 import { FileMimeType } from "@/utils/download-file"
 
 const CodeEditor = () => {
@@ -17,7 +19,9 @@ const CodeEditor = () => {
 
   const debounced = useDebounceCallback(setCode, 500)
 
-  const handleEditorWillMount: BeforeMount = (monaco) => {
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
+
+  const handleBeforeMount: BeforeMount = (monaco) => {
     monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
       noSemanticValidation: true,
       noSyntaxValidation: true,
@@ -27,6 +31,10 @@ const CodeEditor = () => {
       jsx: monaco.languages.typescript.JsxEmit.React,
       isolatedModules: true,
     })
+  }
+
+  const handleOnMount: OnMount = (editor) => {
+    editorRef.current = editor
   }
 
   const handleChange = (value?: string) => debounced(value || "")
@@ -42,6 +50,10 @@ const CodeEditor = () => {
         </TabsList>
 
         <div className="-mr-1.5 flex items-center gap-0.5">
+          {editorRef.current !== null && (
+            <FormatCode editor={editorRef.current} />
+          )}
+
           <DownloadFile
             content={code}
             filename="email.tsx"
@@ -59,7 +71,8 @@ const CodeEditor = () => {
           className="[&_.monaco-editor]:absolute"
           value={code}
           onChange={handleChange}
-          beforeMount={handleEditorWillMount}
+          beforeMount={handleBeforeMount}
+          onMount={handleOnMount}
           path="file:///index.tsx"
           options={{
             minimap: {
