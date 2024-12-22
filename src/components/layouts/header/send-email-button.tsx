@@ -74,7 +74,12 @@ const SendEmailButton = () => {
                 <FormItem>
                   <FormLabel>Recipient</FormLabel>
                   <FormControl>
-                    <Input placeholder="you@example.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="you@example.com"
+                      autoFocus
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
