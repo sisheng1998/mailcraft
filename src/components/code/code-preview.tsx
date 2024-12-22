@@ -29,14 +29,10 @@ const CodePreview = () => {
       onValueChange={setValue}
       className="flex flex-1 flex-col bg-background"
     >
-      <div className="flex items-center justify-between gap-4 pr-4">
-        <TabsList className="h-auto justify-start rounded-none bg-transparent p-0">
+      <div className="flex items-center justify-between gap-4 border-b pr-4">
+        <TabsList variant="outline">
           {TYPES.map((type) => (
-            <TabsTrigger
-              key={type.value}
-              value={type.value}
-              className="relative rounded-none border-b-2 border-b-transparent bg-transparent px-4 py-3 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none"
-            >
+            <TabsTrigger key={type.value} value={type.value}>
               {type.title}
             </TabsTrigger>
           ))}
