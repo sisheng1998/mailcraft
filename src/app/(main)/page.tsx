@@ -10,11 +10,11 @@ import EmailPreview from "@/components/email/email-preview"
 
 const Home = () => (
   <ResizablePanelGroup direction="horizontal">
-    <ResizablePanel>
+    <ResizablePanel className="min-w-80">
       <CodeEditor />
     </ResizablePanel>
     <ResizableHandle />
-    <ResizablePanel>
+    <ResizablePanel className="min-w-80">
       <EmailPreview />
     </ResizablePanel>
   </ResizablePanelGroup>
