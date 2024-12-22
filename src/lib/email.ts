@@ -33,11 +33,13 @@ export const evaluateCode = (code: string): EmailComponent => {
     },
   }
 
-  new Function("exports", "process", "require", code)(
-    module.exports,
-    process,
-    require
-  )
+  new Function(
+    "exports",
+    "process",
+    "require",
+    `const React = require("react");
+    ${code}`
+  )(module.exports, process, require)
 
   const emailComponent = module.exports.default
 
