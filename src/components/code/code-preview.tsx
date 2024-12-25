@@ -9,6 +9,7 @@ import { useEmail } from "@/hooks/use-email"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CopyToClipboard from "@/components/code/copy-to-clipboard"
 import DownloadFile from "@/components/code/download-file"
+import PreviewContainer from "@/components/preview-container"
 import { parseAsType, TYPE_KEY, TYPES } from "@/constants/views"
 import { FileMimeType } from "@/utils/download-file"
 
@@ -16,65 +17,67 @@ const CodePreview = () => {
   const { resolvedTheme } = useTheme()
 
   const { emailHtml, plainText } = useEmail()
-  const [value, setValue] = useQueryState(
+  const [type, setType] = useQueryState(
     TYPE_KEY,
     parseAsType.withDefault(TYPES[0].value)
   )
 
-  const isPlainText = value === "plain-text"
+  const isPlainText = type === "plain-text"
 
   return (
-    <Tabs
-      value={value}
-      onValueChange={setValue}
-      className="flex flex-1 flex-col bg-background"
-    >
-      <div className="flex items-center justify-between gap-4 border-b pr-4">
-        <TabsList variant="outline">
-          {TYPES.map((type) => (
-            <TabsTrigger key={type.value} value={type.value}>
-              {type.title}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+    <PreviewContainer>
+      <Tabs
+        value={type}
+        onValueChange={setType}
+        className="flex flex-1 flex-col bg-background"
+      >
+        <div className="flex items-center justify-between gap-4 border-b pr-4">
+          <TabsList variant="outline">
+            {TYPES.map((type) => (
+              <TabsTrigger key={type.value} value={type.value}>
+                {type.title}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-        <div className="-mr-1.5 flex items-center gap-0.5">
-          <DownloadFile
-            content={isPlainText ? plainText : emailHtml}
-            filename={`email.${isPlainText ? "txt" : "html"}`}
-            mimeType={isPlainText ? FileMimeType.TEXT : FileMimeType.HTML}
-          />
+          <div className="-mr-1.5 flex items-center gap-0.5">
+            <DownloadFile
+              content={isPlainText ? plainText : emailHtml}
+              filename={`email.${isPlainText ? "txt" : "html"}`}
+              mimeType={isPlainText ? FileMimeType.TEXT : FileMimeType.HTML}
+            />
 
-          <CopyToClipboard content={isPlainText ? plainText : emailHtml} />
+            <CopyToClipboard content={isPlainText ? plainText : emailHtml} />
+          </div>
         </div>
-      </div>
 
-      {TYPES.map((type) => (
-        <TabsContent
-          key={type.value}
-          value={type.value}
-          className="mt-0 flex-1"
-        >
-          <Editor
-            theme={resolvedTheme === "light" ? "vs" : "vs-dark"}
-            className="[&_.monaco-editor]:absolute"
-            defaultLanguage="html"
-            value={type.value === "plain-text" ? plainText : emailHtml}
-            path={`file:///index.${type.value === "plain-text" ? "txt" : "html"}`}
-            options={{
-              minimap: {
-                enabled: false,
-              },
-              scrollBeyondLastLine: false,
-              readOnly: true,
-              padding: {
-                top: 8,
-              },
-            }}
-          />
-        </TabsContent>
-      ))}
-    </Tabs>
+        {TYPES.map((type) => (
+          <TabsContent
+            key={type.value}
+            value={type.value}
+            className="mt-0 flex-1"
+          >
+            <Editor
+              theme={resolvedTheme === "light" ? "vs" : "vs-dark"}
+              className="[&_.monaco-editor]:absolute"
+              defaultLanguage="html"
+              value={type.value === "plain-text" ? plainText : emailHtml}
+              path={`file:///index.${type.value === "plain-text" ? "txt" : "html"}`}
+              options={{
+                minimap: {
+                  enabled: false,
+                },
+                scrollBeyondLastLine: false,
+                readOnly: true,
+                padding: {
+                  top: 4,
+                },
+              }}
+            />
+          </TabsContent>
+        ))}
+      </Tabs>
+    </PreviewContainer>
   )
 }
 

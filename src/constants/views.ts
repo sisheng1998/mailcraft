@@ -45,3 +45,26 @@ export const parseAsType = createParser({
     TYPES.find((t) => t.value === value)?.value || TYPES[0].value,
   serialize: (value) => value,
 })
+
+export const MODE_KEY = "mode"
+
+export const MODES = [
+  {
+    title: "Editor",
+    value: "editor",
+  },
+  {
+    title: "Preview",
+    value: "preview",
+  },
+  {
+    title: "Code",
+    value: "code",
+  },
+]
+
+export const parseAsMode = createParser({
+  parse: (value) =>
+    MODES.find((v) => v.value === value)?.value || MODES[0].value,
+  serialize: (value) => value,
+})

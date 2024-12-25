@@ -3,6 +3,7 @@
 import React from "react"
 import { useQueryState } from "nuqs"
 
+import { useIsMobile } from "@/hooks/use-mobile"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Tooltip,
@@ -12,13 +13,17 @@ import {
 import { parseAsView, VIEW_KEY, VIEWS } from "@/constants/views"
 
 const PreviewMode = () => {
-  const [value, setValue] = useQueryState(
+  const isMobile = useIsMobile()
+
+  const [view, setView] = useQueryState(
     VIEW_KEY,
     parseAsView.withDefault(VIEWS[0].value)
   )
 
+  if (isMobile) return null
+
   return (
-    <Tabs value={value} onValueChange={setValue}>
+    <Tabs value={view} onValueChange={setView}>
       <TabsList>
         {VIEWS.map((view) => (
           <Tooltip key={view.value}>

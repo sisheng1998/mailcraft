@@ -1,23 +1,14 @@
+"use client"
+
 import React from "react"
 
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable"
-import CodeEditor from "@/components/code/code-editor"
-import EmailPreview from "@/components/email/email-preview"
+import { useIsMobile } from "@/hooks/use-mobile"
+import DesktopView from "@/components/home/desktop-view"
+import MobileView from "@/components/home/mobile-view"
 
-const Home = () => (
-  <ResizablePanelGroup direction="horizontal">
-    <ResizablePanel className="min-w-80">
-      <CodeEditor />
-    </ResizablePanel>
-    <ResizableHandle />
-    <ResizablePanel className="min-w-80">
-      <EmailPreview />
-    </ResizablePanel>
-  </ResizablePanelGroup>
-)
+const Home = () => {
+  const isMobile = useIsMobile()
+  return isMobile ? <MobileView /> : <DesktopView />
+}
 
 export default Home
