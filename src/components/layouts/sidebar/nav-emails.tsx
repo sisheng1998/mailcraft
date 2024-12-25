@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { ChevronRight, Plus } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,16 +14,9 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import NewEmailButton from "@/components/layouts/sidebar/new-email-button"
 
-// TODO: Display list of emails + redirect to email page
 const NavEmails = () => {
   const emails = []
 
@@ -33,16 +26,7 @@ const NavEmails = () => {
         <SidebarGroupLabel>
           Emails
           <div className="-mr-1 ml-auto flex items-center gap-0.5">
-            {emails.length > 0 && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button size="icon" variant="ghost" className="size-6">
-                    <Plus />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="right">New Email</TooltipContent>
-              </Tooltip>
-            )}
+            {emails.length > 0 && <NewEmailButton isIcon />}
 
             <CollapsibleTrigger asChild>
               <Button size="icon" variant="ghost" className="size-6">
@@ -55,14 +39,7 @@ const NavEmails = () => {
         <CollapsibleContent>
           <SidebarGroupContent>
             <SidebarMenu>
-              {emails.length === 0 && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton>
-                    <Plus />
-                    <span>New Email</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
+              {emails.length === 0 && <NewEmailButton />}
             </SidebarMenu>
           </SidebarGroupContent>
         </CollapsibleContent>
