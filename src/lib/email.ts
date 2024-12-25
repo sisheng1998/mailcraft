@@ -70,23 +70,25 @@ export const getCleanHtml = (html: string) =>
     (match) => invisibleCharacters[match]
   )
 
+const replaceUrl = (attribute: string) => (match: string, url: string) =>
+  match.replace(
+    `${attribute}="/static/${url}"`,
+    `${attribute}="${REACT_EMAIL_DEMO_URL}/static/${url}"`
+  )
+
 export const updateStaticResourceUrls = (html: string): string => {
   html = html.replace(
     /<img\s+[^>]*src="\/static\/([^"]+)"[^>]*>/g,
-    (match, url) =>
-      match.replace(
-        `src="/static/${url}"`,
-        `src="${REACT_EMAIL_DEMO_URL}/static/${url}"`
-      )
+    replaceUrl("src")
   )
-
   html = html.replace(
     /<link\s+[^>]*href="\/static\/([^"]+)"[^>]*>/g,
-    (match, url) =>
-      match.replace(
-        `href="/static/${url}"`,
-        `href="${REACT_EMAIL_DEMO_URL}/static/${url}"`
-      )
+    replaceUrl("href")
+  )
+  html = html.replace(
+    /style="([^"]*)url\(&quot;\/static\/([^&]+)&quot;\)([^"]*)"/g,
+    (match, before, url, after) =>
+      `style="${before}url(&quot;${REACT_EMAIL_DEMO_URL}/static/${url}&quot;)${after}"`
   )
 
   return html
