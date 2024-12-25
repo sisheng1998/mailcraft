@@ -6,6 +6,7 @@ import { useTheme } from "next-themes"
 import { useDebounceCallback } from "usehooks-ts"
 
 import { useEmail } from "@/hooks/use-email"
+import LoadingIndicator from "@/components/loading-indicator"
 
 const CodeEditor = () => {
   const { resolvedTheme } = useTheme()
@@ -32,6 +33,7 @@ const CodeEditor = () => {
       theme={resolvedTheme === "light" ? "vs" : "vs-dark"}
       defaultLanguage="typescript"
       className="[&_.monaco-editor]:absolute"
+      loading={<LoadingIndicator />}
       value={code}
       onChange={handleChange}
       beforeMount={handleBeforeMount}

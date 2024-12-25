@@ -9,6 +9,7 @@ import { useEmail } from "@/hooks/use-email"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CopyToClipboard from "@/components/code/copy-to-clipboard"
 import DownloadFile from "@/components/code/download-file"
+import LoadingIndicator from "@/components/loading-indicator"
 import PreviewContainer from "@/components/preview-container"
 import { parseAsType, TYPE_KEY, TYPES } from "@/constants/views"
 import { FileMimeType } from "@/utils/download-file"
@@ -59,8 +60,9 @@ const CodePreview = () => {
           >
             <Editor
               theme={resolvedTheme === "light" ? "vs" : "vs-dark"}
-              className="[&_.monaco-editor]:absolute"
               defaultLanguage="html"
+              className="[&_.monaco-editor]:absolute"
+              loading={<LoadingIndicator />}
               value={type.value === "plain-text" ? plainText : emailHtml}
               path={`file:///index.${type.value === "plain-text" ? "txt" : "html"}`}
               options={{
