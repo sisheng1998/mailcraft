@@ -1,14 +1,15 @@
 "use client"
 
 import React, { useState } from "react"
-import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Plus } from "lucide-react"
+import { useQueryState } from "nuqs"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { v4 as uuid } from "uuid"
 import { z } from "zod"
 
+import { Email } from "@/types/email"
 import { Button, LoaderButton } from "@/components/ui/button"
 import {
   Dialog,
@@ -36,13 +37,20 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { NEW_EMAIL_CODE } from "@/components/email/constants"
+import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 
 const formSchema = z.object({
   name: z.string().min(1, "Required"),
 })
 
+// TODO: Display top loader after email is created
+
 const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
-  const { push } = useRouter()
+  const [_, setEmailId] = useQueryState(
+    EMAIL_ID_KEY,
+    parseAsEmailId.withDefault("")
+  )
+
   const [open, setOpen] = useState<boolean>(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -56,18 +64,21 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
     try {
       const id = uuid()
 
-      window.localStorage.setItem(
-        `email-${id}`,
-        JSON.stringify({
-          name: values.name,
-          code: NEW_EMAIL_CODE,
-        })
-      )
+      const email: Email = {
+        id,
+        name: values.name,
+        code: NEW_EMAIL_CODE,
+        recipient: "",
+        subject: "",
+        createdAt: new Date().toISOString(),
+      }
+
+      localStorage.setItem(`email-${id}`, JSON.stringify(email))
 
       setOpen(false)
-      toast.success("Email created!")
+      setEmailId(id)
 
-      push(`/email/${id}`)
+      toast.success("Email created!")
     } catch (error) {
       toast.error(error instanceof Error ? error.message : String(error))
     }
@@ -104,7 +115,7 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
         </SidebarMenuItem>
       )}
 
-      <DialogContent onCloseAutoFocus={(e) => e.preventDefault()}>
+      <DialogContent onCloseAutoFocus={(event) => event.preventDefault()}>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -143,7 +154,6 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
 
               <LoaderButton
                 type="submit"
-                icon={Plus}
                 disabled={
                   !form.formState.isValid || form.formState.isSubmitting
                 }

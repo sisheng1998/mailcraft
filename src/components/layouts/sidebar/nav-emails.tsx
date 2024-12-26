@@ -3,6 +3,7 @@
 import React from "react"
 import { ChevronRight } from "lucide-react"
 
+import { getAllEmails } from "@/lib/email"
 import { Button } from "@/components/ui/button"
 import {
   Collapsible,
@@ -15,10 +16,13 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/components/ui/sidebar"
+import NavEmailItem from "@/components/layouts/sidebar/nav-email-item"
 import NewEmailButton from "@/components/layouts/sidebar/new-email-button"
 
+// TODO: Refetch all emails when local storage changes
+
 const NavEmails = () => {
-  const emails = []
+  const emails = getAllEmails()
 
   return (
     <Collapsible defaultOpen className="group/collapsible">
@@ -39,7 +43,13 @@ const NavEmails = () => {
         <CollapsibleContent>
           <SidebarGroupContent>
             <SidebarMenu>
-              {emails.length === 0 && <NewEmailButton />}
+              {emails.length === 0 ? (
+                <NewEmailButton />
+              ) : (
+                emails.map((email, index) => (
+                  <NavEmailItem key={email.id} email={email} index={index} />
+                ))
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </CollapsibleContent>

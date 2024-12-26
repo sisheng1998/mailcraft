@@ -10,6 +10,7 @@ import {
   LayoutTemplate,
   SquareArrowOutUpRight,
 } from "lucide-react"
+import { useQueryState } from "nuqs"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -26,6 +27,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 import GitHub from "@/icons/GitHub"
 
 const ITEMS = [
@@ -58,6 +60,8 @@ const ITEMS = [
 const NavPrimary = () => {
   const pathname = usePathname()
 
+  const [emailId] = useQueryState(EMAIL_ID_KEY, parseAsEmailId.withDefault(""))
+
   return (
     <Collapsible defaultOpen className="group/collapsible">
       <SidebarGroup>
@@ -78,7 +82,7 @@ const NavPrimary = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {ITEMS.map((item) => {
-                const isActive = pathname === item.url
+                const isActive = pathname === item.url && emailId === ""
 
                 return (
                   <SidebarMenuItem key={item.title} className="group-menu-item">

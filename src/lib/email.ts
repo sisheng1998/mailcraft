@@ -2,7 +2,7 @@ import React from "react"
 import * as ReactEmailComponents from "@react-email/components"
 import { transform } from "@swc/wasm-web"
 
-import { EmailComponent } from "@/types/email"
+import { Email, EmailComponent } from "@/types/email"
 import {
   REACT_EMAIL_API_ENDPOINT,
   REACT_EMAIL_DEMO_URL,
@@ -112,3 +112,12 @@ export const sendTestEmail = async (body: {
 
   return data
 }
+
+export const getAllEmails = (): Email[] =>
+  Object.entries(localStorage)
+    .filter(([key]) => key.startsWith("email-"))
+    .map(([_, value]) => JSON.parse(value))
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
