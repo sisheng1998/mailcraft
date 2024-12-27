@@ -82,7 +82,7 @@ const NavPrimary = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {ITEMS.map((item) => {
-                const isActive = pathname === item.url && emailId === ""
+                const isActive = pathname === item.url && !emailId
 
                 return (
                   <SidebarMenuItem key={item.title} className="group-menu-item">

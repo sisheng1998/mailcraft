@@ -2,7 +2,6 @@
 
 import React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { FileText, MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 import { useQueryState } from "nuqs"
 
@@ -32,7 +31,6 @@ import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 
 const NavEmailItem = ({ index, email }: { index: number; email: Email }) => {
   const isMobile = useIsMobile()
-  const pathname = usePathname()
   const createQueryString = useCreateQueryString()
 
   const [emailId] = useQueryState(EMAIL_ID_KEY, parseAsEmailId.withDefault(""))
@@ -46,7 +44,7 @@ const NavEmailItem = ({ index, email }: { index: number; email: Email }) => {
         isActive={isActive}
         className={cn(isActive && "pointer-events-none")}
       >
-        <Link href={`${pathname}?${createQueryString(EMAIL_ID_KEY, email.id)}`}>
+        <Link href={`/?${createQueryString(EMAIL_ID_KEY, email.id)}`}>
           <FileText />
           <span>{email.name || `Email #${index + 1}`}</span>
         </Link>
