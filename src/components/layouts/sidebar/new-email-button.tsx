@@ -3,13 +3,14 @@
 import React, { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Plus } from "lucide-react"
-import { useQueryState } from "nuqs"
+import { useRouter } from "nextjs-toploader/app"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { v4 as uuid } from "uuid"
 import { z } from "zod"
 
 import { Email } from "@/types/email"
+import useCreateQueryString from "@/hooks/use-create-query-string"
 import { Button, LoaderButton } from "@/components/ui/button"
 import {
   Dialog,
@@ -37,19 +38,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { NEW_EMAIL_CODE } from "@/components/email/constants"
-import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
+import { EMAIL_ID_KEY } from "@/constants/email"
 
 const formSchema = z.object({
   name: z.string().min(1, "Required"),
 })
 
-// TODO: Display top loader after email is created
-
 const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
-  const [_, setEmailId] = useQueryState(
-    EMAIL_ID_KEY,
-    parseAsEmailId.withDefault("")
-  )
+  const { push } = useRouter()
+  const createQueryString = useCreateQueryString()
 
   const [open, setOpen] = useState<boolean>(false)
 
@@ -76,7 +73,7 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
       localStorage.setItem(`email-${id}`, JSON.stringify(email))
 
       setOpen(false)
-      setEmailId(id)
+      push(`/?${createQueryString(EMAIL_ID_KEY, id)}`)
 
       toast.success("Email created!")
     } catch (error) {
