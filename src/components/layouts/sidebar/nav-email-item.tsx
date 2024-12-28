@@ -166,9 +166,12 @@ const EditDialog = ({
       })
     )
 
-    setOpen(false)
+    window.dispatchEvent(
+      new StorageEvent("local-storage", { key: `email-${email.id}` })
+    )
 
-    toast.success(`Email "${email.name}" updated!`)
+    setOpen(false)
+    toast.success(`Email "${values.name}" updated!`)
   }
 
   return (
@@ -255,6 +258,10 @@ const DeleteAlertDialog = ({
 
   const handleDelete = () => {
     localStorage.removeItem(`email-${email.id}`)
+    window.dispatchEvent(
+      new StorageEvent("local-storage", { key: `email-${email.id}` })
+    )
+
     toast.success(`Email "${email.name}" deleted!`)
 
     if (isActive) {
