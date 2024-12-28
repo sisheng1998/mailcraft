@@ -40,7 +40,7 @@ import {
 import { NEW_EMAIL_CODE } from "@/components/email/constants"
 import { EMAIL_ID_KEY } from "@/constants/email"
 
-const formSchema = z.object({
+export const emailFormSchema = z.object({
   name: z.string().min(1, "Required"),
 })
 
@@ -50,14 +50,14 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
 
   const [open, setOpen] = useState<boolean>(false)
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof emailFormSchema>>({
+    resolver: zodResolver(emailFormSchema),
     defaultValues: {
       name: "",
     },
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof emailFormSchema>) => {
     try {
       const id = uuid()
 
@@ -75,7 +75,7 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
       setOpen(false)
       push(`/?${createQueryString(EMAIL_ID_KEY, id)}`)
 
-      toast.success("Email created!")
+      toast.success(`Email "${email.name}" created!`)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : String(error))
     }
@@ -122,7 +122,7 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
               <DialogTitle>New Email</DialogTitle>
 
               <DialogDescription>
-                The email will be saved locally in your browser
+                The email will be saved locally in your browser.
               </DialogDescription>
             </DialogHeader>
 
