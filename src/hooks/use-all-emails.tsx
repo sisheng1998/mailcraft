@@ -20,6 +20,7 @@ const useAllEmails = (): Email[] => {
     window.addEventListener("storage", handleStorageChange)
 
     const originalSetItem = localStorage.setItem
+    const originalRemoveItem = localStorage.removeItem
 
     localStorage.setItem = (key: string, value: string) => {
       originalSetItem.apply(localStorage, [key, value])
@@ -29,9 +30,18 @@ const useAllEmails = (): Email[] => {
       }
     }
 
+    localStorage.removeItem = (key: string) => {
+      originalRemoveItem.apply(localStorage, [key])
+
+      if (key.startsWith("email-")) {
+        setEmails(getAllEmails())
+      }
+    }
+
     return () => {
       window.removeEventListener("storage", handleStorageChange)
       localStorage.setItem = originalSetItem
+      localStorage.removeItem = originalRemoveItem
     }
   }, [])
 
