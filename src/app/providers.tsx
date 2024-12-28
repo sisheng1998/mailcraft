@@ -6,23 +6,26 @@ import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import ClientOnly from "@/components/layouts/client-only"
 import Preloader from "@/components/layouts/preloader"
+import RadixDialogProvider from "@/components/layouts/radix-dialog-provider"
 import TopLoader from "@/components/layouts/top-loader"
 import ThemeProvider from "@/components/theme-provider"
 
 const Providers = ({ children }: { children: React.ReactNode }) => (
   <NuqsAdapter>
     <ThemeProvider attribute="class" disableTransitionOnChange>
-      <SidebarProvider>
-        <TopLoader />
+      <RadixDialogProvider>
+        <SidebarProvider>
+          <TopLoader />
 
-        <EmailProvider>
-          <ClientOnly>{children}</ClientOnly>
-        </EmailProvider>
-      </SidebarProvider>
+          <EmailProvider>
+            <ClientOnly>{children}</ClientOnly>
+          </EmailProvider>
+        </SidebarProvider>
 
-      <Preloader />
+        <Preloader />
 
-      <Toaster />
+        <Toaster />
+      </RadixDialogProvider>
     </ThemeProvider>
   </NuqsAdapter>
 )
