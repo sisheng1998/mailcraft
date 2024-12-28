@@ -158,11 +158,13 @@ const EditDialog = ({
   })
 
   const onSubmit = (values: z.infer<typeof emailFormSchema>) => {
+    const name = values.name.trim()
+
     localStorage.setItem(
       `email-${email.id}`,
       JSON.stringify({
         ...email,
-        name: values.name,
+        name,
       })
     )
 
@@ -171,7 +173,7 @@ const EditDialog = ({
     )
 
     setOpen(false)
-    toast.success(`Email "${values.name}" updated!`)
+    toast.success(`Email "${name}" updated!`)
   }
 
   return (

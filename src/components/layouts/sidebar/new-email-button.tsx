@@ -60,10 +60,11 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
   const onSubmit = (values: z.infer<typeof emailFormSchema>) => {
     try {
       const id = uuid()
+      const name = values.name.trim()
 
       const email: Email = {
         id,
-        name: values.name,
+        name,
         code: NEW_EMAIL_CODE,
         recipient: "",
         subject: "",
@@ -75,7 +76,7 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
       setOpen(false)
       push(`/?${createQueryString(EMAIL_ID_KEY, id)}`)
 
-      toast.success(`Email "${email.name}" created!`)
+      toast.success(`Email "${name}" created!`)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : String(error))
     }
