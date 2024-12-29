@@ -76,7 +76,7 @@ const NavEmailItem = ({ index, email }: { index: number; email: Email }) => {
   const isActive = emailId === email.id
 
   return (
-    <SidebarMenuItem>
+    <SidebarMenuItem className="flex flex-col">
       <SidebarMenuButton
         asChild
         isActive={isActive}
