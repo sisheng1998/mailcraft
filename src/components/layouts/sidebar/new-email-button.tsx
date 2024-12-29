@@ -155,9 +155,7 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
 
               <LoaderButton
                 type="submit"
-                disabled={
-                  !form.formState.isValid || form.formState.isSubmitting
-                }
+                disabled={form.formState.isSubmitting}
                 isLoading={form.formState.isSubmitting}
               >
                 Create
