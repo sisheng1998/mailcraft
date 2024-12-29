@@ -1,4 +1,5 @@
-export const HOME_PAGE_CODE = `import React from "react"
+export const HOME_PAGE_CODE = `
+import React from "react"
 import {
   Body,
   Column,
@@ -21,7 +22,8 @@ const BASE_URL = "https://mailcraft.sisheng.my"
 
 const FONT: FontProps["fontFamily"] = "Plus Jakarta Sans"
 const FALLBACK_FONT: FontProps["fallbackFontFamily"] = "Verdana"
-// https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap
+
+// https://stackoverflow.com/a/76670730
 const WEB_FONT: FontProps["webFont"] = {
   url: "https://fonts.gstatic.com/s/plusjakartasans/v8/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yygg_vb.woff2",
   format: "woff2",
@@ -44,25 +46,27 @@ const Home = () => (
 
       <Preview>Welcome to Mailcraft - Build & Preview Emails Online</Preview>
 
-      <Body className="m-0 bg-zinc-100 p-6 text-zinc-600">
+      <Body className="m-0 bg-zinc-100 p-6">
         <Container className="mb-5 px-8">
           <Row className="mx-auto w-0">
             <Column className="pr-2.5">
               <Img
                 src={\`\${BASE_URL}/logo.png\`}
-                width="24"
-                height="24"
-                alt="Mailcraft"
+                width="28"
+                height="28"
+                alt="Logo"
                 className="block"
               />
             </Column>
 
             <Column className="w-full">
-              <Text className="m-0 font-bold text-zinc-900">Mailcraft</Text>
+              <Text className="m-0 text-lg font-bold text-zinc-900">
+                Mailcraft
+              </Text>
             </Column>
           </Row>
 
-          <Text className="!mb-0 !mt-2 text-center text-zinc-500">
+          <Text className="!mb-0 !mt-1 text-center text-zinc-500">
             Build & Preview Emails Online
           </Text>
         </Container>
@@ -72,9 +76,9 @@ const Home = () => (
             Welcome to Mailcraft!
           </Heading>
 
-          <Text className="m-0">
+          <Text className="m-0 text-zinc-600">
             An advanced online code editor designed specifically for building
-            and previewing email templates with ease. Seamless integration with:
+            and previewing email templates with ease, seamless integration with:
           </Text>
 
           <Section className="mb-2.5 mt-4">
@@ -101,23 +105,23 @@ const Home = () => (
             ))}
           </Section>
 
-          <Text className="m-0">
+          <Text className="m-0 text-zinc-600">
             Whether learning React Email, prototyping a creative idea, or
             crafting polished email templates, Mailcraft has you covered.
           </Text>
 
           <Hr className="my-6 !border-zinc-200" />
 
-          <Text className="m-0">Best regards,</Text>
-          <Text className="m-0">- The Mailcraft Team</Text>
+          <Text className="m-0 text-zinc-600">Happy Mail Crafting!</Text>
+          <Text className="m-0 text-zinc-600">- The Mailcraft Team</Text>
         </Container>
 
-        <Container className="mt-6 px-8 text-center text-zinc-400">
-          <Text className="m-0 mb-3 text-xs">
+        <Container className="mt-6 px-8 text-center">
+          <Text className="m-0 mb-3 text-xs text-zinc-500">
             This is an automated email. Please do not reply to this email.
           </Text>
 
-          <Text className="m-0 text-xs">
+          <Text className="m-0 text-xs text-zinc-400">
             Copyright © {new Date().getFullYear()} - Mailcraft
           </Text>
         </Container>
