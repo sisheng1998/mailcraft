@@ -1,49 +1,21 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { useEventListener } from "usehooks-ts"
 
 import { Email } from "@/types/email"
 import { getAllEmails } from "@/lib/email"
 
 const useAllEmails = (): Email[] => {
-  const [emails, setEmails] = useState<Email[]>([])
+  const [emails, setEmails] = useState<Email[]>(() => getAllEmails())
 
-  useEffect(() => {
+  const handleStorageChange = (event: StorageEvent | CustomEvent) => {
+    if (!(event as StorageEvent).key?.startsWith("email-")) return
     setEmails(getAllEmails())
+  }
 
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.storageArea === localStorage) {
-        setEmails(getAllEmails())
-      }
-    }
-
-    window.addEventListener("storage", handleStorageChange)
-
-    const originalSetItem = localStorage.setItem
-    const originalRemoveItem = localStorage.removeItem
-
-    localStorage.setItem = (key: string, value: string) => {
-      originalSetItem.apply(localStorage, [key, value])
-
-      if (key.startsWith("email-")) {
-        setEmails(getAllEmails())
-      }
-    }
-
-    localStorage.removeItem = (key: string) => {
-      originalRemoveItem.apply(localStorage, [key])
-
-      if (key.startsWith("email-")) {
-        setEmails(getAllEmails())
-      }
-    }
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange)
-      localStorage.setItem = originalSetItem
-      localStorage.removeItem = originalRemoveItem
-    }
-  }, [])
+  useEventListener("storage", handleStorageChange)
+  useEventListener("local-storage", handleStorageChange)
 
   return emails
 }
