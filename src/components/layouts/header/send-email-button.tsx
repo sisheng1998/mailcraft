@@ -45,7 +45,7 @@ const SendEmailButton = () => {
 
   const defaultValues = {
     recipient: email?.recipient || "",
-    subject: email?.subject || "Testing React Email",
+    subject: email?.subject || "Testing Mailcraft Email",
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

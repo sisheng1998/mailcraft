@@ -13,7 +13,7 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: "Mailcraft",
-  description: "Build and preview emails online with React Email",
+  description: "Build & Preview Emails Online",
 }
 
 const RootLayout = ({
