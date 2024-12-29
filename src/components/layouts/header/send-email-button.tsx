@@ -1,12 +1,15 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Mail } from "lucide-react"
+import { useQueryState } from "nuqs"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { useLocalStorage } from "usehooks-ts"
 import { z } from "zod"
 
+import { Email } from "@/types/email"
 import { sendTestEmail } from "@/lib/email"
 import { useEmail } from "@/hooks/use-email"
 import { Button, LoaderButton } from "@/components/ui/button"
@@ -24,6 +27,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 
 const formSchema = z.object({
   recipient: z.string().min(1, "Required").email("Invalid email"),
@@ -33,21 +37,45 @@ const formSchema = z.object({
 const SendEmailButton = () => {
   const { emailHtml, error } = useEmail()
 
+  const [emailId] = useQueryState(EMAIL_ID_KEY, parseAsEmailId.withDefault(""))
+  const [email, setEmail] = useLocalStorage<Email | null>(
+    `email-${emailId}`,
+    null
+  )
+
+  const defaultValues = {
+    recipient: email?.recipient || "",
+    subject: email?.subject || "Testing React Email",
+  }
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      recipient: "",
-      subject: "Testing React Email",
-    },
+    defaultValues,
   })
+
+  useEffect(() => {
+    form.reset(defaultValues)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email])
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const to = values.recipient.trim()
+      const subject = values.subject.trim()
+
       await sendTestEmail({
-        to: values.recipient,
-        subject: values.subject,
+        to,
+        subject,
         html: emailHtml,
       })
+
+      if (email) {
+        setEmail({
+          ...email,
+          recipient: to,
+          subject,
+        })
+      }
 
       toast.success("Email sent! Check your inbox.")
     } catch (error) {
@@ -104,11 +132,7 @@ const SendEmailButton = () => {
               type="submit"
               className="mt-1 self-start"
               icon={Mail}
-              disabled={
-                !!error ||
-                !form.formState.isValid ||
-                form.formState.isSubmitting
-              }
+              disabled={!!error || form.formState.isSubmitting}
               isLoading={form.formState.isSubmitting}
             >
               Send

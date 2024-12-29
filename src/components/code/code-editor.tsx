@@ -3,16 +3,28 @@
 import React from "react"
 import Editor, { BeforeMount } from "@monaco-editor/react"
 import { useTheme } from "next-themes"
-import { useDebounceCallback } from "usehooks-ts"
+import { useQueryState } from "nuqs"
+import { useDebounceCallback, useLocalStorage } from "usehooks-ts"
 
+import { Email } from "@/types/email"
 import { useEmail } from "@/hooks/use-email"
 import LoadingIndicator from "@/components/loading-indicator"
+import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 
 const CodeEditor = () => {
   const { resolvedTheme } = useTheme()
   const { code, setCode } = useEmail()
 
-  const debounced = useDebounceCallback(setCode, 500)
+  const [emailId] = useQueryState(EMAIL_ID_KEY, parseAsEmailId.withDefault(""))
+  const [email, setEmail] = useLocalStorage<Email | null>(
+    `email-${emailId}`,
+    null
+  )
+
+  const debounced = useDebounceCallback(
+    (code: string) => (email ? setEmail({ ...email, code }) : setCode(code)),
+    500
+  )
 
   const handleBeforeMount: BeforeMount = (monaco) => {
     monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({

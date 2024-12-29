@@ -17,11 +17,11 @@ const Home = () => {
   const { setCode } = useEmail()
 
   const [emailId] = useQueryState(EMAIL_ID_KEY, parseAsEmailId.withDefault(""))
-  const currentEmail: Email | null = useReadLocalStorage(`email-${emailId}`)
+  const email: Email | null = useReadLocalStorage(`email-${emailId}`)
 
   useEffect(() => {
-    setCode(currentEmail ? currentEmail.code : HOME_PAGE_CODE)
-  }, [currentEmail, setCode])
+    setCode(email?.code || HOME_PAGE_CODE)
+  }, [email, setCode])
 
   return isMobile ? <MobileView /> : <DesktopView />
 }
