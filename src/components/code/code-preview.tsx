@@ -74,6 +74,11 @@ const CodePreview = () => {
                 padding: {
                   top: 4,
                 },
+                renderControlCharacters: false,
+                unicodeHighlight: {
+                  invisibleCharacters: false,
+                  ambiguousCharacters: false,
+                },
               }}
             />
           </TabsContent>

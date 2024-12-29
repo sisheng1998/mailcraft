@@ -13,7 +13,6 @@ import initSwc from "@swc/wasm-web"
 
 import {
   evaluateCode,
-  getCleanHtml,
   transpileCode,
   updateStaticResourceUrls,
 } from "@/lib/email"
@@ -71,11 +70,9 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
         setPreviewHtml(previewHtml)
 
         const emailHtml = updateStaticResourceUrls(
-          getCleanHtml(
-            await render(createElement(emailComponent), {
-              pretty: true,
-            })
-          )
+          await render(createElement(emailComponent), {
+            pretty: true,
+          })
         )
         setEmailHtml(emailHtml)
 

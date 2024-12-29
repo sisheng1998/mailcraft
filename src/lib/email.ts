@@ -54,22 +54,6 @@ export const evaluateCode = (code: string): EmailComponent => {
   return emailComponent as EmailComponent
 }
 
-const invisibleCharacters: { [key: string]: string } = {
-  "\xa0": "&#847;", // NO-BREAK SPACE
-  "\u200c": "&zwnj;", // ZERO WIDTH NON-JOINER
-  "\u200b": "&#8199;", // ZERO WIDTH SPACE
-  "\u200d": "&#8203;", // ZERO WIDTH JOINER
-  "\u200e": "&#65279;", // LEFT-TO-RIGHT MARK
-  "\u200f": "&#8207;", // RIGHT-TO-LEFT MARK
-  "\ufeff": "&#65279;", // ZERO WIDTH NO-BREAK SPACE
-}
-
-export const getCleanHtml = (html: string) =>
-  html.replace(
-    /[\xa0\u200c\u200b\u200d\u200e\u200f\ufeff](?! )/g,
-    (match) => invisibleCharacters[match]
-  )
-
 const replaceUrl = (attribute: string) => (match: string, url: string) =>
   match.replace(
     `${attribute}="/static/${url}"`,
