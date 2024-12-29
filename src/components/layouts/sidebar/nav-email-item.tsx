@@ -173,7 +173,7 @@ const EditDialog = ({
     )
 
     setOpen(false)
-    toast.success(`Email "${name}" updated!`)
+    toast.success(`"${name}" updated!`)
   }
 
   return (
@@ -262,7 +262,7 @@ const DeleteAlertDialog = ({
       new StorageEvent("local-storage", { key: `email-${email.id}` })
     )
 
-    toast.success(`Email "${email.name}" deleted!`)
+    toast.success(`"${email.name}" deleted!`)
 
     if (isActive) {
       push(`/?${createQueryString(EMAIL_ID_KEY, null)}`)

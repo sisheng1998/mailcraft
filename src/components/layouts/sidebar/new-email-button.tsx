@@ -79,7 +79,7 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
       setOpen(false)
       push(`/?${createQueryString(EMAIL_ID_KEY, id)}`)
 
-      toast.success(`Email "${name}" created!`)
+      toast.success(`"${name}" created!`)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : String(error))
     }
