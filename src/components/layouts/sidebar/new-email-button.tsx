@@ -72,6 +72,9 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
       }
 
       localStorage.setItem(`email-${id}`, JSON.stringify(email))
+      window.dispatchEvent(
+        new StorageEvent("local-storage", { key: `email-${id}` })
+      )
 
       setOpen(false)
       push(`/?${createQueryString(EMAIL_ID_KEY, id)}`)
