@@ -47,7 +47,7 @@ const Home = () => (
 
       <Body className="m-0 bg-zinc-100 p-6">
         <Container className="mb-5 px-8">
-          <Row className="mx-auto w-0">
+          <Row className="mx-auto max-w-0">
             <Column className="pr-2.5">
               <Img
                 src={`${BASE_URL}/logo.png`}
