@@ -250,6 +250,6 @@ const Email = ({ name = "{{NAME}}" }: EmailProps) => (
 export default Email
 
 Email.PreviewProps = {
-  name: "there",
+  name: "Mail Crafter",
 } as EmailProps
 `.trim()
