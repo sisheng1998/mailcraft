@@ -9,7 +9,7 @@ const Preloader = () => {
   const [isAnimated, setIsAnimated] = useState<boolean>(false)
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsAnimated(true), 1000)
+    const timer = setTimeout(() => setIsAnimated(true), 500)
     return () => clearTimeout(timer)
   }, [])
 
@@ -20,7 +20,7 @@ const Preloader = () => {
         isAnimated && "pointer-events-none opacity-0"
       )}
     >
-      <Mail className="animate-logo size-24" />
+      <Mail className="size-24" />
     </div>
   )
 }
