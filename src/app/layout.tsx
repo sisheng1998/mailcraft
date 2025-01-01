@@ -33,7 +33,7 @@ const RootLayout = ({
     </head>
     <body
       className={cn(
-        "relative flex min-h-screen flex-col overflow-x-hidden overscroll-y-none font-sans antialiased",
+        "relative flex min-h-svh flex-col overflow-x-hidden overscroll-y-none font-sans antialiased",
         fontSans.variable
       )}
     >

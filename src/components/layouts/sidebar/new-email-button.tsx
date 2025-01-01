@@ -150,7 +150,9 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline" className="mt-2 sm:mt-0">
+                  Cancel
+                </Button>
               </DialogClose>
 
               <LoaderButton
