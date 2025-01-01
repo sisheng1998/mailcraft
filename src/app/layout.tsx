@@ -24,12 +24,7 @@ const RootLayout = ({
 }>) => (
   <html lang="en" suppressHydrationWarning>
     <head>
-      <Script
-        src="https://unpkg.com/web-streams-polyfill/dist/polyfill.js"
-        strategy="beforeInteractive"
-        integrity="sha384-btb1WLdaJTo5VvAXUjCsVnoXRjt0m2tM/dDz97AMSIasOYap1uvLAaHaQ45RQ/CZ"
-        crossOrigin="anonymous"
-      />
+      <Script src="https://unpkg.com/web-streams-polyfill/dist/polyfill.js" />
     </head>
     <body
       className={cn(
