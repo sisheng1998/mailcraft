@@ -7,10 +7,10 @@ import { useReadLocalStorage } from "usehooks-ts"
 import { Email } from "@/types/email"
 import { useEmail } from "@/hooks/use-email"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { HOME_PAGE_CODE } from "@/components/email/constants"
 import DesktopView from "@/components/home/desktop-view"
 import MobileView from "@/components/home/mobile-view"
 import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
+import { HOME_PAGE_CODE } from "@/constants/email-templates"
 
 const Home = () => {
   const isMobile = useIsMobile()

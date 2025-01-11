@@ -16,7 +16,7 @@ import {
   transpileCode,
   updateStaticResourceUrls,
 } from "@/lib/email"
-import { HOME_PAGE_CODE } from "@/components/email/constants"
+import { HOME_PAGE_CODE } from "@/constants/email-templates"
 
 interface EmailContextType {
   code: string

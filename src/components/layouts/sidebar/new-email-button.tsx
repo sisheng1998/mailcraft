@@ -37,8 +37,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { NEW_EMAIL_CODE } from "@/components/email/constants"
 import { EMAIL_ID_KEY } from "@/constants/email"
+import { NEW_EMAIL_CODE } from "@/constants/email-templates"
 
 export const emailFormSchema = z.object({
   name: z.string().min(1, "Required"),
