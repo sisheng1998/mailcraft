@@ -10,6 +10,7 @@ import { Email } from "@/types/email"
 import { useEmail } from "@/hooks/use-email"
 import LoadingIndicator from "@/components/loading-indicator"
 import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
+import { TYPES } from "@/constants/types"
 
 const CodeEditor = () => {
   const { resolvedTheme } = useTheme()
@@ -27,14 +28,27 @@ const CodeEditor = () => {
   )
 
   const handleBeforeMount: BeforeMount = (monaco) => {
+    monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+      jsx: monaco.languages.typescript.JsxEmit.React,
+      esModuleInterop: true,
+      isolatedModules: true,
+    })
+
     monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
       noSemanticValidation: true,
       noSyntaxValidation: true,
     })
 
-    monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-      jsx: monaco.languages.typescript.JsxEmit.React,
-      isolatedModules: true,
+    TYPES.forEach(({ url, path }) => {
+      fetch(url)
+        .then((response) => response.text())
+        .then((types) =>
+          monaco.languages.typescript.typescriptDefaults.addExtraLib(
+            types,
+            path
+          )
+        )
+        .catch((error) => console.error(error))
     })
   }
 
