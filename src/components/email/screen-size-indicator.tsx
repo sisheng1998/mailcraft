@@ -38,7 +38,7 @@ const ScreenSizeIndicator = ({
   return (
     <div className="flex items-center justify-center gap-2 border-b px-4 py-[0.9375rem] text-xs font-medium tracking-wider">
       <p>
-        {width.toLocaleString()} (W) x {height.toLocaleString()} (H)
+        {width.toLocaleString()}px (W) x {height.toLocaleString()}px (H)
       </p>
 
       <span className="text-muted-foreground">-</span>
