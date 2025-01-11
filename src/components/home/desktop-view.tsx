@@ -60,7 +60,19 @@ const DesktopView = () => {
       <ResizableHandle />
 
       <ResizablePanel className="min-w-80">
-        {isCodePreview ? <CodePreview /> : <EmailPreview />}
+        {isCodePreview ? (
+          <CodePreview />
+        ) : (
+          <ResizablePanelGroup direction="vertical">
+            <ResizablePanel className="min-h-[calc(20rem+47px)]">
+              <EmailPreview />
+            </ResizablePanel>
+
+            <ResizableHandle />
+
+            <ResizablePanel defaultSize={0} />
+          </ResizablePanelGroup>
+        )}
       </ResizablePanel>
     </ResizablePanelGroup>
   )
