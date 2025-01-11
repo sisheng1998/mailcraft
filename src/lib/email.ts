@@ -78,6 +78,13 @@ export const updateStaticResourceUrls = (html: string): string => {
   return html
 }
 
+export const extractErrorMessage = (html: string): string | null => {
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(html, "text/html")
+  const template = doc.querySelector("template[data-msg]")
+  return template?.getAttribute("data-msg") || null
+}
+
 export const sendTestEmail = async (body: {
   to: string
   subject: string
