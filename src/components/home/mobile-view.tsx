@@ -1,17 +1,21 @@
 "use client"
 
 import React from "react"
+import dynamic from "next/dynamic"
 import { useQueryState } from "nuqs"
 
 import { useEmail } from "@/hooks/use-email"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import CodeEditor from "@/components/code/code-editor"
 import CodePreview from "@/components/code/code-preview"
 import CopyToClipboard from "@/components/code/copy-to-clipboard"
 import DownloadFile from "@/components/code/download-file"
 import EmailPreview from "@/components/email/email-preview"
 import { MODE_KEY, MODES, parseAsMode } from "@/constants/views"
 import { FileMimeType } from "@/utils/download-file"
+
+const CodeEditor = dynamic(() => import("@/components/code/code-editor"), {
+  ssr: false,
+})
 
 const MobileView = () => {
   const { code } = useEmail()

@@ -1,8 +1,10 @@
 "use client"
 
-import React from "react"
-import Editor, { BeforeMount, OnMount } from "@monaco-editor/react"
+import React, { useEffect, useRef } from "react"
+import Editor, { BeforeMount, loader, OnMount } from "@monaco-editor/react"
 import { editor as monacoEditor, Selection } from "monaco-editor"
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api"
+import { configureMonacoTailwindcss, tailwindcssData } from "monaco-tailwindcss"
 import { useTheme } from "next-themes"
 import { useQueryState } from "nuqs"
 import { useDebounceCallback, useLocalStorage } from "usehooks-ts"
@@ -12,6 +14,32 @@ import { useEmail } from "@/hooks/use-email"
 import LoadingIndicator from "@/components/loading-indicator"
 import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 import { TYPES } from "@/constants/types"
+
+loader.config({ monaco })
+
+window.MonacoEnvironment = {
+  getWorker: (_, label) => {
+    switch (label) {
+      case "editorWorkerService":
+        return new Worker(
+          new URL("monaco-editor/esm/vs/editor/editor.worker", import.meta.url)
+        )
+      case "typescript":
+        return new Worker(
+          new URL(
+            "monaco-editor/esm/vs/language/typescript/ts.worker",
+            import.meta.url
+          )
+        )
+      case "tailwindcss":
+        return new Worker(
+          new URL("monaco-tailwindcss/tailwindcss.worker", import.meta.url)
+        )
+      default:
+        throw new Error(`Unknown label ${label}`)
+    }
+  },
+}
 
 const CodeEditor = () => {
   const { resolvedTheme } = useTheme()
@@ -28,16 +56,27 @@ const CodeEditor = () => {
     500
   )
 
+  const editorRef = useRef<monacoEditor.IStandaloneCodeEditor>()
+
+  useEffect(() => {
+    editorRef.current?.getModel()?.dispose()
+  }, [])
+
   const handleBeforeMount: BeforeMount = (monaco) => {
+    monaco.languages.css.cssDefaults.setOptions({
+      data: {
+        dataProviders: {
+          tailwindcssData,
+        },
+      },
+    })
+
+    configureMonacoTailwindcss(monaco)
+
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       jsx: monaco.languages.typescript.JsxEmit.React,
       esModuleInterop: true,
       isolatedModules: true,
-    })
-
-    monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-      noSemanticValidation: true,
-      noSyntaxValidation: true,
     })
 
     TYPES.forEach(({ url, path }) => {
@@ -54,6 +93,8 @@ const CodeEditor = () => {
   }
 
   const handleOnMount: OnMount = (editor, monaco) => {
+    editorRef.current = editor
+
     editor.onKeyDown((event) => {
       const enabledLanguages: readonly string[] = [
         "html",
