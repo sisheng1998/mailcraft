@@ -70,6 +70,8 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
         )
 
         const errorMessage = extractErrorMessage(previewHtml)
+        console.log("previewHtml", previewHtml)
+        console.log("errorMessage", errorMessage)
         if (errorMessage) throw new Error(errorMessage)
 
         setPreviewHtml(previewHtml)
