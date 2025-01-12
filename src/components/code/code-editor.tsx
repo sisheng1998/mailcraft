@@ -59,7 +59,9 @@ const CodeEditor = () => {
   const editorRef = useRef<monacoEditor.IStandaloneCodeEditor>()
 
   useEffect(() => {
-    editorRef.current?.getModel()?.dispose()
+    return () => {
+      editorRef.current?.getModel()?.dispose()
+    }
   }, [])
 
   const handleBeforeMount: BeforeMount = (monaco) => {
