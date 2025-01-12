@@ -1,7 +1,8 @@
 "use client"
 
 import React from "react"
-import Editor, { BeforeMount } from "@monaco-editor/react"
+import Editor, { BeforeMount, OnMount } from "@monaco-editor/react"
+import { editor as monacoEditor, Selection } from "monaco-editor"
 import { useTheme } from "next-themes"
 import { useQueryState } from "nuqs"
 import { useDebounceCallback, useLocalStorage } from "usehooks-ts"
@@ -52,6 +53,99 @@ const CodeEditor = () => {
     })
   }
 
+  const handleOnMount: OnMount = (editor, monaco) => {
+    editor.onKeyDown((event) => {
+      const enabledLanguages: readonly string[] = [
+        "html",
+        "markdown",
+        "javascript",
+        "typescript",
+      ] as const
+
+      const model = editor.getModel()
+      if (!model || !enabledLanguages.includes(model.getLanguageId())) return
+
+      const isSelfClosing = (tag: string): boolean =>
+        [
+          "area",
+          "base",
+          "br",
+          "col",
+          "command",
+          "embed",
+          "hr",
+          "img",
+          "input",
+          "keygen",
+          "link",
+          "meta",
+          "param",
+          "source",
+          "track",
+          "wbr",
+          "circle",
+          "ellipse",
+          "line",
+          "path",
+          "polygon",
+          "polyline",
+          "rect",
+          "stop",
+          "use",
+        ].includes(tag)
+
+      if (event.browserEvent.key === ">") {
+        const currentSelections = editor.getSelections() ?? []
+
+        const edits: monacoEditor.IIdentifiedSingleEditOperation[] = []
+        const newSelections: Selection[] = []
+
+        for (const selection of currentSelections) {
+          if (!selection) continue
+
+          newSelections.push(
+            new monaco.Selection(
+              selection.selectionStartLineNumber,
+              selection.selectionStartColumn + 1,
+              selection.endLineNumber,
+              selection.endColumn + 1
+            )
+          )
+
+          const contentBeforeChange = model.getValueInRange({
+            startLineNumber: 1,
+            startColumn: 1,
+            endLineNumber: selection.endLineNumber,
+            endColumn: selection.endColumn,
+          })
+
+          const match = contentBeforeChange.match(/<([\w-]+)(?![^>]*\/>)[^>]*$/)
+          if (!match?.[1]) continue
+
+          const [fullMatch, tag] = match
+          if (isSelfClosing(tag) || fullMatch.trim().endsWith("/")) continue
+
+          edits.push({
+            range: {
+              startLineNumber: selection.endLineNumber,
+              startColumn: selection.endColumn + 1,
+              endLineNumber: selection.endLineNumber,
+              endColumn: selection.endColumn + 1,
+            },
+            text: `</${tag}>`,
+          })
+        }
+
+        if (edits.length > 0) {
+          setTimeout(
+            () => editor.executeEdits("auto-close-tag", edits, newSelections),
+            0
+          )
+        }
+      }
+    })
+  }
+
   const handleChange = (value?: string) => debounced(value || "")
 
   return (
@@ -63,6 +157,7 @@ const CodeEditor = () => {
       value={code}
       onChange={handleChange}
       beforeMount={handleBeforeMount}
+      onMount={handleOnMount}
       path="file:///index.tsx"
       options={{
         minimap: {
