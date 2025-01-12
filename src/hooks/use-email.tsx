@@ -13,7 +13,6 @@ import initSwc from "@swc/wasm-web"
 
 import {
   evaluateCode,
-  extractErrorMessage,
   transpileCode,
   updateStaticResourceUrls,
 } from "@/lib/email"
@@ -68,12 +67,6 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
         const previewHtml = updateStaticResourceUrls(
           await render(createElement(emailComponent, previewProps))
         )
-
-        const errorMessage = extractErrorMessage(previewHtml)
-        console.log("previewHtml", previewHtml)
-        console.log("errorMessage", errorMessage)
-        if (errorMessage) throw new Error(errorMessage)
-
         setPreviewHtml(previewHtml)
 
         const emailHtml = updateStaticResourceUrls(
@@ -93,6 +86,13 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
     }
 
     renderEmail()
+
+    const originalConsoleError = console.error
+    console.error = (...args: unknown[]) => setError(args.join(" "))
+
+    return () => {
+      console.error = originalConsoleError
+    }
   }, [code, initialized])
 
   return (
