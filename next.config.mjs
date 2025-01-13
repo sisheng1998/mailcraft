@@ -8,7 +8,7 @@ const nextConfig = {
     if (!isServer) {
       config.plugins.push(
         new MonacoEditorWebpackPlugin({
-          languages: ["typescript", "css"],
+          languages: ["html", "css", "typescript"],
           filename: "static/[name].worker.js",
         })
       )

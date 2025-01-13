@@ -2,11 +2,13 @@
 
 import React, { useEffect, useRef } from "react"
 import Editor, { BeforeMount, loader, OnMount } from "@monaco-editor/react"
+import { shikiToMonaco } from "@shikijs/monaco"
 import { editor as monacoEditor, Selection } from "monaco-editor"
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api"
 import { configureMonacoTailwindcss, tailwindcssData } from "monaco-tailwindcss"
 import { useTheme } from "next-themes"
 import { useQueryState } from "nuqs"
+import { createHighlighter } from "shiki"
 import { useDebounceCallback, useLocalStorage } from "usehooks-ts"
 
 import { Email } from "@/types/email"
@@ -18,11 +20,18 @@ import { TYPES } from "@/constants/types"
 loader.config({ monaco })
 
 window.MonacoEnvironment = {
-  getWorker: (_, label) => {
+  getWorker(moduleId, label) {
     switch (label) {
       case "editorWorkerService":
         return new Worker(
           new URL("monaco-editor/esm/vs/editor/editor.worker", import.meta.url)
+        )
+      case "html":
+        return new Worker(
+          new URL(
+            "monaco-editor/esm/vs/language/html/html.worker",
+            import.meta.url
+          )
         )
       case "typescript":
         return new Worker(
@@ -40,6 +49,9 @@ window.MonacoEnvironment = {
     }
   },
 }
+
+// TODO: Fix comment bug in TSX
+// TODO: Fix text jump when typing while setCode
 
 const CodeEditor = () => {
   const { resolvedTheme } = useTheme()
@@ -64,7 +76,17 @@ const CodeEditor = () => {
     }
   }, [])
 
-  const handleBeforeMount: BeforeMount = (monaco) => {
+  const handleBeforeMount: BeforeMount = async (monaco) => {
+    const highlighter = await createHighlighter({
+      themes: ["dark-plus", "light-plus"],
+      langs: ["html", "tsx"],
+      langAlias: {
+        typescript: "tsx",
+      },
+    })
+
+    shikiToMonaco(highlighter, monaco)
+
     monaco.languages.css.cssDefaults.setOptions({
       data: {
         dataProviders: {
@@ -81,17 +103,12 @@ const CodeEditor = () => {
       isolatedModules: true,
     })
 
-    TYPES.forEach(({ url, path }) => {
-      fetch(url)
-        .then((response) => response.text())
-        .then((types) =>
-          monaco.languages.typescript.typescriptDefaults.addExtraLib(
-            types,
-            path
-          )
-        )
-        .catch((error) => console.error(error))
-    })
+    await Promise.all(
+      TYPES.map(async ({ url, path }) => {
+        const types = await fetch(url).then((res) => res.text())
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(types, path)
+      })
+    )
   }
 
   const handleOnMount: OnMount = (editor, monaco) => {
@@ -100,8 +117,6 @@ const CodeEditor = () => {
     editor.onKeyDown((event) => {
       const enabledLanguages: readonly string[] = [
         "html",
-        "markdown",
-        "javascript",
         "typescript",
       ] as const
 
@@ -193,7 +208,7 @@ const CodeEditor = () => {
 
   return (
     <Editor
-      theme={resolvedTheme === "light" ? "vs" : "vs-dark"}
+      theme={`${resolvedTheme}-plus`}
       defaultLanguage="typescript"
       className="[&_.monaco-editor]:absolute"
       loading={<LoadingIndicator />}

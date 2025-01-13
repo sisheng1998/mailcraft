@@ -1,7 +1,8 @@
 "use client"
 
-import React from "react"
-import { Editor } from "@monaco-editor/react"
+import React, { useEffect, useRef } from "react"
+import { Editor, OnMount } from "@monaco-editor/react"
+import { editor as monacoEditor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import { useQueryState } from "nuqs"
 
@@ -24,6 +25,18 @@ const CodePreview = () => {
   )
 
   const isPlainText = type === "plain-text"
+
+  const editorRef = useRef<monacoEditor.IStandaloneCodeEditor>()
+
+  useEffect(() => {
+    return () => {
+      editorRef.current?.getModel()?.dispose()
+    }
+  }, [])
+
+  const handleOnMount: OnMount = (editor) => {
+    editorRef.current = editor
+  }
 
   return (
     <PreviewContainer>
@@ -59,11 +72,12 @@ const CodePreview = () => {
             className="mt-0 flex-1"
           >
             <Editor
-              theme={resolvedTheme === "light" ? "vs" : "vs-dark"}
+              theme={`${resolvedTheme}-plus`}
               defaultLanguage="html"
               className="[&_.monaco-editor]:absolute"
               loading={<LoadingIndicator />}
               value={type.value === "plain-text" ? plainText : emailHtml}
+              onMount={handleOnMount}
               path={`file:///index.${type.value === "plain-text" ? "txt" : "html"}`}
               options={{
                 minimap: {
