@@ -78,7 +78,10 @@ const CodeEditor = () => {
 
   const handleBeforeMount: BeforeMount = async (monaco) => {
     const highlighter = await createHighlighter({
-      themes: ["dark-plus", "light-plus"],
+      themes:
+        resolvedTheme === "light"
+          ? ["light-plus", "dark-plus"]
+          : ["dark-plus", "light-plus"],
       langs: ["html", "tsx"],
       langAlias: {
         typescript: "tsx",
