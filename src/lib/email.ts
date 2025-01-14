@@ -7,6 +7,7 @@ import {
   REACT_EMAIL_API_ENDPOINT,
   REACT_EMAIL_DEMO_URL,
 } from "@/constants/email"
+import { COMPONENTS } from "@/constants/types"
 
 export const transpileCode = async (code: string) => {
   const result = await transform(code, {
@@ -32,7 +33,12 @@ export const evaluateCode = (code: string): EmailComponent => {
     },
     require: (module: string) => {
       if (module === "react") return React
-      if (module === "@react-email/components") return ReactEmailComponents
+      if (
+        module.startsWith("@react-email") &&
+        COMPONENTS.includes(module.split("/")[1])
+      )
+        return ReactEmailComponents
+
       throw new Error(`Module "${module}" not found`)
     },
   }
