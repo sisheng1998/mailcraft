@@ -5,7 +5,7 @@ import Editor, { BeforeMount, OnMount } from "@monaco-editor/react"
 import { editor as monacoEditor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import { useQueryState } from "nuqs"
-import { useDebounceCallback, useLocalStorage } from "usehooks-ts"
+import { useLocalStorage } from "usehooks-ts"
 
 import { Email } from "@/types/email"
 import { useEmail } from "@/hooks/use-email"
@@ -18,7 +18,6 @@ import setupMonacoEditor from "@/utils/editor/setup-monaco-editor"
 initializeMonacoEditor()
 
 // TODO: Fix comment bug in TSX
-// TODO: Fix text jump when typing while setCode
 
 const CodeEditor = () => {
   const { resolvedTheme } = useTheme()
@@ -28,11 +27,6 @@ const CodeEditor = () => {
   const [email, setEmail] = useLocalStorage<Email | null>(
     `email-${emailId}`,
     null
-  )
-
-  const debounced = useDebounceCallback(
-    (code: string) => (email ? setEmail({ ...email, code }) : setCode(code)),
-    500
   )
 
   const editorRef = useRef<monacoEditor.IStandaloneCodeEditor>()
@@ -55,7 +49,8 @@ const CodeEditor = () => {
     })
   }
 
-  const handleChange = (value?: string) => debounced(value || "")
+  const handleChange = (code: string = "") =>
+    email ? setEmail({ ...email, code }) : setCode(code)
 
   return (
     <Editor

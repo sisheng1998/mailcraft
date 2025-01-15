@@ -10,6 +10,7 @@ import React, {
 } from "react"
 import { render } from "@react-email/render"
 import initSwc from "@swc/wasm-web"
+import { useDebounceValue } from "usehooks-ts"
 
 import {
   evaluateCode,
@@ -36,6 +37,7 @@ interface EmailProviderProps {
 
 const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
   const [code, setCode] = useState<string>(HOME_PAGE_CODE)
+  const [debouncedCode] = useDebounceValue<string>(code, 500)
 
   const [previewHtml, setPreviewHtml] = useState<string>("")
   const [emailHtml, setEmailHtml] = useState<string>("")
@@ -60,7 +62,7 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
       try {
         setError("")
 
-        const transpiledCode = await transpileCode(code)
+        const transpiledCode = await transpileCode(debouncedCode)
         const emailComponent = evaluateCode(transpiledCode)
 
         const previewProps = emailComponent.PreviewProps || {}
@@ -93,7 +95,7 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
     return () => {
       console.error = originalConsoleError
     }
-  }, [code, initialized])
+  }, [debouncedCode, initialized])
 
   return (
     <EmailContext.Provider
