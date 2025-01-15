@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef } from "react"
-import Editor, { BeforeMount, OnMount } from "@monaco-editor/react"
+import Editor, { OnMount } from "@monaco-editor/react"
 import { editor as monacoEditor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import { useQueryState } from "nuqs"
@@ -13,11 +13,13 @@ import LoadingIndicator from "@/components/loading-indicator"
 import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 import handleAutoCloseTag from "@/utils/editor/auto-close-tag"
 import initializeMonacoEditor from "@/utils/editor/initialize-monaco-editor"
-import setupMonacoEditor from "@/utils/editor/setup-monaco-editor"
 
 initializeMonacoEditor()
 
+// TODO: Fix tailwindcss intellisense not working when refresh with code preview
 // TODO: Fix comment bug in TSX
+// TODO: Add suggestion for import statements
+// TODO: Add auto complete for import statements
 
 const CodeEditor = () => {
   const { resolvedTheme } = useTheme()
@@ -37,10 +39,6 @@ const CodeEditor = () => {
     }
   }, [])
 
-  const handleBeforeMount: BeforeMount = async (monaco) => {
-    await setupMonacoEditor(monaco, resolvedTheme)
-  }
-
   const handleOnMount: OnMount = (editor, monaco) => {
     editorRef.current = editor
 
@@ -54,13 +52,12 @@ const CodeEditor = () => {
 
   return (
     <Editor
-      theme={`${resolvedTheme}-plus`}
+      theme={resolvedTheme === "dark" ? "vs-dark" : "light"}
       defaultLanguage="typescript"
       className="[&_.monaco-editor]:absolute"
       loading={<LoadingIndicator />}
       value={code}
       onChange={handleChange}
-      beforeMount={handleBeforeMount}
       onMount={handleOnMount}
       path="file:///index.tsx"
       options={{

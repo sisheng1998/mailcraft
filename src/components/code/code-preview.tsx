@@ -72,7 +72,7 @@ const CodePreview = () => {
             className="mt-0 flex-1"
           >
             <Editor
-              theme={`${resolvedTheme}-plus`}
+              theme={resolvedTheme === "dark" ? "vs-dark" : "light"}
               defaultLanguage="html"
               className="[&_.monaco-editor]:absolute"
               loading={<LoadingIndicator />}
