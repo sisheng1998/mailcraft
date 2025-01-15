@@ -119,6 +119,7 @@ const NewEmailButton = ({ isIcon = false }: { isIcon?: boolean }) => {
       <DialogContent onCloseAutoFocus={(event) => event.preventDefault()}>
         <Form {...form}>
           <form
+            autoComplete="off"
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >

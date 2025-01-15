@@ -92,6 +92,7 @@ const SendEmailButton = () => {
       <DropdownMenuContent className="min-w-80 p-3" align="end">
         <Form {...form}>
           <form
+            autoComplete="off"
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
