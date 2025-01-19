@@ -15,9 +15,6 @@ import initializeMonacoEditor from "@/utils/editor/initialize-monaco-editor"
 
 initializeMonacoEditor()
 
-// TODO: Fix comment bug in TSX
-// TODO: Fix code editor not displaying in mobile
-
 const CodeEditor = () => {
   const { resolvedTheme } = useTheme()
   const { code, setCode } = useEmail()
