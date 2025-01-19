@@ -45,11 +45,6 @@ const initializeMonacoEditor = () => {
 
     configureMonacoTailwindcss(monaco)
 
-    monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-      noSemanticValidation: true,
-      noSyntaxValidation: false,
-    })
-
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       jsx: monaco.languages.typescript.JsxEmit.React,
       esModuleInterop: true,

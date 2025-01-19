@@ -16,8 +16,6 @@ import initializeMonacoEditor from "@/utils/editor/initialize-monaco-editor"
 initializeMonacoEditor()
 
 // TODO: Fix comment bug in TSX
-// TODO: Add suggestion for import statements
-// TODO: Add auto complete for import statements
 // TODO: Fix code editor not displaying in mobile
 
 const CodeEditor = () => {
@@ -48,7 +46,7 @@ const CodeEditor = () => {
       value={code}
       onChange={handleChange}
       onMount={handleOnMount}
-      path="file:///index.tsx"
+      path={`file:///${emailId || "index"}.tsx`}
       options={{
         minimap: {
           enabled: false,
