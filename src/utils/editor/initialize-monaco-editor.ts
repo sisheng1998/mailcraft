@@ -48,7 +48,10 @@ const initializeMonacoEditor = () => {
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       jsx: monaco.languages.typescript.JsxEmit.React,
       esModuleInterop: true,
-      isolatedModules: true,
+    })
+
+    monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: true,
     })
 
     await Promise.all(
