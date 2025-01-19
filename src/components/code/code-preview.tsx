@@ -1,23 +1,22 @@
 "use client"
 
-import React, { useEffect, useRef } from "react"
-import { Editor, OnMount } from "@monaco-editor/react"
-import { editor as monacoEditor } from "monaco-editor"
-import { useTheme } from "next-themes"
+import React from "react"
+import dynamic from "next/dynamic"
 import { useQueryState } from "nuqs"
 
 import { useEmail } from "@/hooks/use-email"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CopyToClipboard from "@/components/code/copy-to-clipboard"
 import DownloadFile from "@/components/code/download-file"
-import LoadingIndicator from "@/components/loading-indicator"
 import PreviewContainer from "@/components/preview-container"
 import { parseAsType, TYPE_KEY, TYPES } from "@/constants/views"
 import { FileMimeType } from "@/utils/download-file"
 
-const CodePreview = () => {
-  const { resolvedTheme } = useTheme()
+const CodeBlock = dynamic(() => import("@/components/code/code-block"), {
+  ssr: false,
+})
 
+const CodePreview = () => {
   const { emailHtml, plainText } = useEmail()
   const [type, setType] = useQueryState(
     TYPE_KEY,
@@ -25,18 +24,6 @@ const CodePreview = () => {
   )
 
   const isPlainText = type === "plain-text"
-
-  const editorRef = useRef<monacoEditor.IStandaloneCodeEditor>()
-
-  useEffect(() => {
-    return () => {
-      editorRef.current?.getModel()?.dispose()
-    }
-  }, [])
-
-  const handleOnMount: OnMount = (editor) => {
-    editorRef.current = editor
-  }
 
   return (
     <PreviewContainer>
@@ -69,31 +56,10 @@ const CodePreview = () => {
           <TabsContent
             key={type.value}
             value={type.value}
-            className="mt-0 flex-1"
+            className="relative mt-0 flex-1"
           >
-            <Editor
-              theme={resolvedTheme === "dark" ? "vs-dark" : "light"}
-              defaultLanguage="html"
-              className="[&_.monaco-editor]:absolute"
-              loading={<LoadingIndicator />}
-              value={type.value === "plain-text" ? plainText : emailHtml}
-              onMount={handleOnMount}
-              path={`file:///index.${type.value === "plain-text" ? "txt" : "html"}`}
-              options={{
-                minimap: {
-                  enabled: false,
-                },
-                scrollBeyondLastLine: false,
-                readOnly: true,
-                padding: {
-                  top: 4,
-                },
-                renderControlCharacters: false,
-                unicodeHighlight: {
-                  invisibleCharacters: false,
-                  ambiguousCharacters: false,
-                },
-              }}
+            <CodeBlock
+              code={type.value === "plain-text" ? plainText : emailHtml}
             />
           </TabsContent>
         ))}

@@ -21,7 +21,7 @@ import { HOME_PAGE_CODE } from "@/constants/email-templates"
 
 interface EmailContextType {
   code: string
-  setCode: (code: string) => void
+  setCode: React.Dispatch<React.SetStateAction<string>>
   previewHtml: string
   emailHtml: string
   plainText: string

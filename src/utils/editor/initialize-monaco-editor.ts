@@ -18,23 +18,22 @@ const LIGHT_THEME = {
   name: "light",
 }
 
+export const highlighter = createHighlighter({
+  themes: [DARK_THEME, LIGHT_THEME],
+  langs: ["html", "tsx"],
+  langAlias: {
+    typescript: "tsx",
+  },
+})
+
 const initializeMonacoEditor = () => {
   loader.config({ monaco })
 
   loader.init().then(async (monaco) => {
+    shikiToMonaco(await highlighter, monaco)
+
     const isDarkMode = document.documentElement.classList.contains("dark")
-
-    const highlighter = await createHighlighter({
-      themes: isDarkMode
-        ? [DARK_THEME, LIGHT_THEME]
-        : [LIGHT_THEME, DARK_THEME],
-      langs: ["html", "tsx"],
-      langAlias: {
-        typescript: "tsx",
-      },
-    })
-
-    shikiToMonaco(highlighter, monaco)
+    monaco.editor.setTheme(isDarkMode ? "vs-dark" : "light")
 
     monaco.languages.css.cssDefaults.setOptions({
       data: {
@@ -67,13 +66,6 @@ const initializeMonacoEditor = () => {
           return new Worker(
             new URL(
               "monaco-editor/esm/vs/editor/editor.worker",
-              import.meta.url
-            )
-          )
-        case "html":
-          return new Worker(
-            new URL(
-              "monaco-editor/esm/vs/language/html/html.worker",
               import.meta.url
             )
           )

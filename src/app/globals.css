@@ -104,6 +104,10 @@
     @apply rounded-lg border-[3px] border-solid border-transparent bg-foreground/20 bg-clip-content transition hover:bg-foreground/30 active:bg-foreground/40;
   }
 
+  ::-webkit-scrollbar-corner {
+    @apply bg-foreground/5;
+  }
+
   :-webkit-autofill,
   :-webkit-autofill:hover,
   :-webkit-autofill:focus,
@@ -116,35 +120,28 @@
 }
 
 @layer components {
-  @keyframes email-rect {
-    from {
-      stroke-dashoffset: -69;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
+  .code-preview code {
+    counter-reset: step;
+    counter-increment: step 0;
+    @apply selection:bg-[#ADD6FF] selection:text-inherit;
   }
 
-  @keyframes email-path {
-    from {
-      stroke-dashoffset: -24;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
+  .dark .code-preview code {
+    @apply selection:bg-[#264F78];
   }
 
-  .animate-logo rect {
-    stroke-dasharray: 69;
-    stroke-dashoffset: -69;
-    animation-name: email-rect;
-    @apply delay-300 duration-500 ease-in-out fill-mode-forwards;
+  .code-preview code .line::before {
+    content: counter(step);
+    counter-increment: step;
+    @apply sticky left-0 z-10 inline-block min-w-[3.75rem] bg-[#FFFFFF] pr-6 text-right text-[#237893];
   }
 
-  .animate-logo path {
-    stroke-dasharray: 24;
-    stroke-dashoffset: -24;
-    animation-name: email-path;
-    @apply delay-700 duration-500 ease-in-out fill-mode-forwards;
+  .dark .code-preview code .line::before {
+    @apply bg-[#1E1E1E] text-[#858585];
+  }
+
+  .code-preview code .line:last-child:empty::before {
+    content: none;
+    counter-increment: none;
   }
 }

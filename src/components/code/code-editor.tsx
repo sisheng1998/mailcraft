@@ -1,8 +1,7 @@
 "use client"
 
-import React, { useEffect, useRef } from "react"
+import React from "react"
 import Editor, { OnMount } from "@monaco-editor/react"
-import { editor as monacoEditor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import { useQueryState } from "nuqs"
 import { useLocalStorage } from "usehooks-ts"
@@ -16,10 +15,11 @@ import initializeMonacoEditor from "@/utils/editor/initialize-monaco-editor"
 
 initializeMonacoEditor()
 
-// TODO: Fix tailwindcss intellisense not working when refresh with code preview
 // TODO: Fix comment bug in TSX
 // TODO: Add suggestion for import statements
 // TODO: Add auto complete for import statements
+// TODO: Fix @type/node not loaded
+// TODO: Fix code editor not displaying in mobile
 
 const CodeEditor = () => {
   const { resolvedTheme } = useTheme()
@@ -31,17 +31,7 @@ const CodeEditor = () => {
     null
   )
 
-  const editorRef = useRef<monacoEditor.IStandaloneCodeEditor>()
-
-  useEffect(() => {
-    return () => {
-      editorRef.current?.getModel()?.dispose()
-    }
-  }, [])
-
   const handleOnMount: OnMount = (editor, monaco) => {
-    editorRef.current = editor
-
     editor.onKeyDown((event) => {
       handleAutoCloseTag(event, editor, monaco)
     })
