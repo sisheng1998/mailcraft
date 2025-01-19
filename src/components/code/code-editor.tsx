@@ -18,7 +18,6 @@ initializeMonacoEditor()
 // TODO: Fix comment bug in TSX
 // TODO: Add suggestion for import statements
 // TODO: Add auto complete for import statements
-// TODO: Fix @type/node not loaded
 // TODO: Fix code editor not displaying in mobile
 
 const CodeEditor = () => {
