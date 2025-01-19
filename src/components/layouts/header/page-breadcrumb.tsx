@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { useQueryState } from "nuqs"
 import { useReadLocalStorage } from "usehooks-ts"
@@ -20,6 +21,10 @@ const PageBreadcrumb = (
 
   const [emailId] = useQueryState(EMAIL_ID_KEY, parseAsEmailId.withDefault(""))
   const currentEmail: Email | null = useReadLocalStorage(`email-${emailId}`)
+
+  useEffect(() => {
+    document.title = `${currentEmail ? `${currentEmail.name} | ` : ""}Mailcraft`
+  }, [currentEmail])
 
   return (
     <Breadcrumb {...props}>
