@@ -13,6 +13,7 @@ import {
 import { useQueryState } from "nuqs"
 
 import { cn } from "@/lib/utils"
+import useCreateQueryString from "@/hooks/use-create-query-string"
 import { Button } from "@/components/ui/button"
 import {
   Collapsible,
@@ -59,6 +60,8 @@ const ITEMS = [
 
 const NavPrimary = () => {
   const pathname = usePathname()
+  const createQueryString = useCreateQueryString()
+  const queryString = createQueryString(EMAIL_ID_KEY, null)
 
   const [emailId] = useQueryState(EMAIL_ID_KEY, parseAsEmailId.withDefault(""))
 
@@ -92,7 +95,11 @@ const NavPrimary = () => {
                       className={cn(isActive && "pointer-events-none")}
                     >
                       <Link
-                        href={item.url}
+                        href={
+                          item.url === "/" && queryString
+                            ? `/?${queryString}`
+                            : item.url
+                        }
                         target={item.isExternal ? "_blank" : "_self"}
                       >
                         <item.icon />

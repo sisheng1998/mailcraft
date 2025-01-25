@@ -258,6 +258,7 @@ const DeleteAlertDialog = ({
 }) => {
   const { push } = useRouter()
   const createQueryString = useCreateQueryString()
+  const queryString = createQueryString(EMAIL_ID_KEY, null)
 
   const handleDelete = () => {
     localStorage.removeItem(`email-${email.id}`)
@@ -268,7 +269,7 @@ const DeleteAlertDialog = ({
     toast.success(`"${email.name}" deleted!`)
 
     if (isActive) {
-      push(`/?${createQueryString(EMAIL_ID_KEY, null)}`)
+      push(queryString ? `/?${queryString}` : "/")
     }
   }
 
