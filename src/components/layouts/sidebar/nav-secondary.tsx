@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import SettingsButton from "@/components/settings/settings-button"
 
 const NavSecondary = (
   props: React.ComponentPropsWithoutRef<typeof SidebarGroup>
@@ -33,6 +34,8 @@ const NavSecondary = (
               {resolvedTheme} Mode
             </SidebarMenuButton>
           </SidebarMenuItem>
+
+          <SettingsButton />
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
