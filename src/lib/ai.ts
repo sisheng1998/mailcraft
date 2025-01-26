@@ -2,6 +2,7 @@ import { createOpenAI } from "@ai-sdk/openai"
 import { APICallError, generateText } from "ai"
 
 import { Settings } from "@/components/settings/settings-button"
+import { EMAIL_SYSTEM_PROMPT } from "@/constants/ai"
 
 export const testConnection = async ({
   modelName,
@@ -52,12 +53,12 @@ export const generateEmailTemplate = async ({
 
     const model = client(modelName)
 
-    const { text: result } = await generateText({
+    const { text } = await generateText({
       model,
       messages: [
         {
           role: "system",
-          content: "",
+          content: EMAIL_SYSTEM_PROMPT,
         },
         {
           role: "user",
@@ -71,15 +72,13 @@ export const generateEmailTemplate = async ({
       ],
     })
 
+    const result = text
+      .replace(/^[\s\S]*?```([\s\S]*?)```[\s\S]*$/, "$1")
+      .replace(/^[a-z]+\n/, "")
+      .trim()
+
     return result
   } catch (error) {
-    if (
-      APICallError.isInstance(error) ||
-      (error instanceof TypeError && error.message.includes("Failed to fetch"))
-    ) {
-      throw new Error("")
-    } else {
-      throw new Error(error instanceof Error ? error.message : String(error))
-    }
+    throw new Error(error instanceof Error ? error.message : String(error))
   }
 }

@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CodePreview from "@/components/code/code-preview"
 import CopyToClipboard from "@/components/code/copy-to-clipboard"
 import DownloadFile from "@/components/code/download-file"
+import GenerateCode from "@/components/code/generate-code"
 import EmailPreview from "@/components/email/email-preview"
 import { parseAsView, VIEW_KEY, VIEWS } from "@/constants/views"
 import { FileMimeType } from "@/utils/download-file"
@@ -45,6 +46,8 @@ const DesktopView = () => {
             </TabsList>
 
             <div className="-mr-1.5 flex items-center gap-0.5">
+              <GenerateCode />
+
               <DownloadFile
                 content={code}
                 filename="email.tsx"
