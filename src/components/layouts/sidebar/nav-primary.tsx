@@ -27,6 +27,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 import GitHub from "@/icons/GitHub"
@@ -61,6 +62,8 @@ const ITEMS = [
 const NavPrimary = () => {
   const pathname = usePathname()
   const createQueryString = useCreateQueryString()
+  const { setOpenMobile } = useSidebar()
+
   const queryString = createQueryString(EMAIL_ID_KEY, null)
 
   const [emailId] = useQueryState(EMAIL_ID_KEY, parseAsEmailId.withDefault(""))
@@ -93,6 +96,7 @@ const NavPrimary = () => {
                       asChild
                       isActive={isActive}
                       className={cn(isActive && "pointer-events-none")}
+                      onClick={() => setOpenMobile(false)}
                     >
                       <Link
                         href={

@@ -55,6 +55,7 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import {
   Tooltip,
@@ -66,6 +67,7 @@ import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 
 const NavEmailItem = ({ index, email }: { index: number; email: Email }) => {
   const isMobile = useIsMobile()
+  const { setOpenMobile } = useSidebar()
   const createQueryString = useCreateQueryString()
 
   const triggerEditRef = useRef<HTMLDivElement>(null)
@@ -81,6 +83,7 @@ const NavEmailItem = ({ index, email }: { index: number; email: Email }) => {
         asChild
         isActive={isActive}
         className={cn(isActive && "pointer-events-none")}
+        onClick={() => setOpenMobile(false)}
       >
         <Link href={`/?${createQueryString(EMAIL_ID_KEY, email.id)}`}>
           <FileText />

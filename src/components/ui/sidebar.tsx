@@ -273,9 +273,10 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { open, toggleSidebar } = useSidebar()
+  const { open, openMobile, isMobile, toggleSidebar } = useSidebar()
 
-  const text = `${open ? "Close" : "Open"} Sidebar`
+  const isOpen = isMobile ? openMobile : open
+  const text = `${isOpen ? "Close" : "Open"} Sidebar`
 
   return (
     <Tooltip>
@@ -292,12 +293,12 @@ const SidebarTrigger = React.forwardRef<
           }}
           {...props}
         >
-          {open ? <PanelLeftClose /> : <PanelLeftOpen />}
+          {isOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
           <span className="sr-only">{text}</span>
         </Button>
       </TooltipTrigger>
 
-      <TooltipContent side="right">{text}</TooltipContent>
+      {!isMobile && <TooltipContent side="right">{text}</TooltipContent>}
     </Tooltip>
   )
 })
