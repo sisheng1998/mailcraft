@@ -2,16 +2,13 @@
 
 import React, { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Settings } from "lucide-react"
+import { SettingsIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { useLocalStorage } from "usehooks-ts"
+import { z } from "zod"
 
-import {
-  settingsFormSchema,
-  Settings as SettingsType,
-  testConnection,
-} from "@/lib/settings"
+import { testConnection } from "@/lib/ai"
 import { Button, LoaderButton } from "@/components/ui/button"
 import {
   Dialog,
@@ -32,11 +29,20 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/ui/password-input"
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { decrypt, encrypt } from "@/utils/crypto"
 
+const formSchema = z.object({
+  modelName: z.string().min(1, "Required"),
+  baseURL: z.string().min(1, "Required").url("Invalid URL"),
+  apiKey: z.string().min(1, "Required"),
+})
+
+export type Settings = z.infer<typeof formSchema>
+
 const SettingsButton = () => {
-  const [settings, setSettings] = useLocalStorage<SettingsType>(
+  const [settings, setSettings] = useLocalStorage<Settings>(
     "settings",
     {
       modelName: "",
@@ -57,18 +63,18 @@ const SettingsButton = () => {
 
   const [open, setOpen] = useState<boolean>(false)
 
-  const form = useForm<SettingsType>({
-    resolver: zodResolver(settingsFormSchema),
+  const form = useForm<Settings>({
+    resolver: zodResolver(formSchema),
     defaultValues: settings,
   })
 
-  const onSubmit = async (values: SettingsType) => {
+  const onSubmit = async (values: Settings) => {
     try {
       const modelName = values.modelName.trim()
       const baseURL = values.baseURL.trim()
       const apiKey = values.apiKey.trim()
 
-      const settings: SettingsType = {
+      const settings: Settings = {
         modelName,
         baseURL,
         apiKey,
@@ -99,7 +105,7 @@ const SettingsButton = () => {
       <SidebarMenuItem>
         <DialogTrigger asChild>
           <SidebarMenuButton>
-            <Settings />
+            <SettingsIcon />
             <span>Settings</span>
           </SidebarMenuButton>
         </DialogTrigger>
@@ -158,7 +164,7 @@ const SettingsButton = () => {
                 <FormItem>
                   <FormLabel>API Key</FormLabel>
                   <FormControl>
-                    <Input placeholder="ghp_1234" type="password" {...field} />
+                    <PasswordInput placeholder="ghp_1234" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
