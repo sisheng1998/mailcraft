@@ -13,7 +13,10 @@ const fontSans = FontSans({
 })
 
 export const metadata: Metadata = {
-  title: "Mailcraft",
+  title: {
+    template: "%s | Mailcraft",
+    default: "Mailcraft",
+  },
   description: "Build & Preview Emails Online",
 }
 

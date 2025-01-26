@@ -14,6 +14,10 @@ import {
 } from "@/components/ui/breadcrumb"
 import { EMAIL_ID_KEY, parseAsEmailId } from "@/constants/email"
 
+const PATHS = {
+  "/": "Home",
+}
+
 const PageBreadcrumb = (
   props: React.ComponentPropsWithoutRef<typeof Breadcrumb>
 ) => {
@@ -31,9 +35,9 @@ const PageBreadcrumb = (
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbPage className="line-clamp-1 break-all">
-            {pathname === "/" && !emailId
-              ? "Home"
-              : currentEmail?.name || "Email"}
+            {pathname === "/" && emailId
+              ? currentEmail?.name || "Email"
+              : PATHS[pathname as keyof typeof PATHS]}
           </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
